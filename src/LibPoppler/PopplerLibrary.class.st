@@ -1,7 +1,7 @@
 Class {
 	#name : #PopplerLibrary,
 	#superclass : #FFILibrary,
-	#category : #LibPoppler
+	#category : #'LibPoppler-Library'
 }
 
 { #category : #'accessing platform' }
