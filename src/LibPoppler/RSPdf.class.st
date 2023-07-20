@@ -19,7 +19,7 @@ RSPdf class >> allPagesOfFileReference: fileReference [
 	d := shape poppler_document_new_from_file: uri.
 
 	p := [ shape poppler_document_get_n_pages: d ] ensure: [
-		     shape gObjectUnref: d ].
+		     shape g_object_unref: d ].
 
 	^ self
 		  pagesOfFileReference: fileReference
@@ -89,14 +89,6 @@ RSPdf >> fileReference: anObject [
 ]
 
 { #category : #'as yet unclassified' }
-RSPdf >> gObjectUnref: handler [
-
-	self
-		ffiCall: #( void g_object_unref #( void * handler ) )
-		module: PopplerLibrary
-]
-
-{ #category : #'as yet unclassified' }
 RSPdf >> g_filename_to_uri: absoluteFileName [
 
 	^ self
@@ -104,6 +96,14 @@ RSPdf >> g_filename_to_uri: absoluteFileName [
 			  #( char #* g_filename_to_uri #( const char #* absoluteFileName
 			        #, NULL #, NULL ) )
 		  module: PopplerLibrary
+]
+
+{ #category : #'as yet unclassified' }
+RSPdf >> g_object_unref: handler [
+
+	self
+		ffiCall: #( void g_object_unref #( void * handler ) )
+		module: PopplerLibrary
 ]
 
 { #category : #initialization }
@@ -185,6 +185,6 @@ RSPdf >> withPopplerPageHandlerDo: block [
 
 	[ block value: p ] ensure: [
 		self
-			gObjectUnref: p;
-			gObjectUnref: d ]
+			g_object_unref: p;
+			g_object_unref: d ]
 ]
