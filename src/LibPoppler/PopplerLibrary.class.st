@@ -9,3 +9,10 @@ PopplerLibrary >> unix64LibraryName [
 
 	^ FFIUnix64LibraryFinder findLibrary: 'libpoppler-glib.so'
 ]
+
+{ #category : #'accessing platform' }
+PopplerLibrary >> win32LibraryName [
+
+	^ FFIWindowsLibraryFinder findAnyLibrary:
+		  #( 'libpoppler-glib-8.dll' )
+]
