@@ -73,7 +73,7 @@ RSPdf >> computeEncompassingRectangle [
 RSPdf >> drawOnAthensCairoCanvas: athensCairoCanvas [
 
 	self withPopplerPageHandlerDo: [ :p |
-		self poppler_page_render: p cairo: athensCairoCanvas getHandle ]
+		athensCairoCanvas renderPopplerPageHandle: p ofPdfShape: self ]
 ]
 
 { #category : #accessing }
@@ -95,15 +95,15 @@ RSPdf >> g_filename_to_uri: absoluteFileName [
 		  ffiCall:
 			  #( char #* g_filename_to_uri #( const char #* absoluteFileName
 			        #, NULL #, NULL ) )
-		  module: PopplerLibrary
+		  module: GLibLibrary
 ]
 
 { #category : #'as yet unclassified' }
 RSPdf >> g_object_unref: handler [
 
 	self
-		ffiCall: #( void g_object_unref #( void * handler ) )
-		module: PopplerLibrary
+		ffiCall: #( void g_object_unref #( void #* handler ) )
+		module: #GObjectLibrary
 ]
 
 { #category : #initialization }
