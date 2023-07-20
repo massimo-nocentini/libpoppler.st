@@ -19,7 +19,7 @@ RSPdf class >> allPagesOfFileReference: fileReference [
 	d := shape poppler_document_new_from_file: uri.
 
 	p := [ shape poppler_document_get_n_pages: d ] ensure: [
-		     shape gObjectUnref: d ].
+		     shape g_object_unref: d ].
 
 	^ self
 		  pagesOfFileReference: fileReference
@@ -86,14 +86,6 @@ RSPdf >> fileReference [
 RSPdf >> fileReference: anObject [
 
 	fileReference := anObject
-]
-
-{ #category : #'as yet unclassified' }
-RSPdf >> gObjectUnref: handler [
-
-	self
-		ffiCall: #( void g_object_unref #( void * handler ) )
-		module: PopplerLibrary
 ]
 
 { #category : #'as yet unclassified' }
