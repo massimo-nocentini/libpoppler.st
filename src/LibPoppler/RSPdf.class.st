@@ -99,11 +99,11 @@ RSPdf >> g_filename_to_uri: absoluteFileName [
 ]
 
 { #category : #'as yet unclassified' }
-RSPdf >> g_object_unref: handler [
+RSPdf >> g_object_unref: handle [
 
 	self
-		ffiCall: #( void g_object_unref #( void #* handler ) )
-		module: #GObjectLibrary
+		ffiCall: #( void g_object_unref #( void #* handle ) )
+		module: GObjectLibrary
 ]
 
 { #category : #initialization }
