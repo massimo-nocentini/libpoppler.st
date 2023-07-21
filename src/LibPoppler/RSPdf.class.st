@@ -69,7 +69,7 @@ RSPdf >> computeEncompassingRectangle [
 		  extent: (width doubleAt: 1) @ (height doubleAt: 1)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #dispatched }
 RSPdf >> drawOnAthensCairoCanvas: athensCairoCanvas [
 
 	self withPopplerPageHandlerDo: [ :p |
@@ -88,7 +88,7 @@ RSPdf >> fileReference: anObject [
 	fileReference := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'ffi methods' }
 RSPdf >> g_filename_to_uri: absoluteFileName [
 
 	^ self
@@ -98,7 +98,7 @@ RSPdf >> g_filename_to_uri: absoluteFileName [
 		  module: GLibLibrary
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'ffi methods' }
 RSPdf >> g_object_unref: handle [
 
 	self
@@ -126,7 +126,7 @@ RSPdf >> pageNumber: anObject [
 	pageNumber := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'ffi methods' }
 RSPdf >> poppler_document: document get_page: p [
 
 	^ self
@@ -136,7 +136,7 @@ RSPdf >> poppler_document: document get_page: p [
 		  module: PopplerLibrary
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'ffi methods' }
 RSPdf >> poppler_document_get_n_pages: document [
 
 	^ self
@@ -145,7 +145,7 @@ RSPdf >> poppler_document_get_n_pages: document [
 		  module: PopplerLibrary
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'ffi methods' }
 RSPdf >> poppler_document_new_from_file: uri [
 
 	^ self
@@ -154,7 +154,7 @@ RSPdf >> poppler_document_new_from_file: uri [
 		  module: PopplerLibrary
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'ffi methods' }
 RSPdf >> poppler_page_get_size: p width: width height: height [
 
 	^ self
@@ -164,7 +164,7 @@ RSPdf >> poppler_page_get_size: p width: width height: height [
 		  module: PopplerLibrary
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'ffi methods' }
 RSPdf >> poppler_page_render: p cairo: cr [
 
 	^ self

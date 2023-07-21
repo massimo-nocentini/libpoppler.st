@@ -7,7 +7,7 @@ Class {
 { #category : #'accessing platform' }
 GLibLibrary >> unix64LibraryName [
 
-	^ FFIUnix64LibraryFinder findLibrary: 'libpoppler-glib.so'
+	^ FFIUnix64LibraryFinder findLibrary: 'libglib-2.0.so'
 ]
 
 { #category : #'accessing platform' }
