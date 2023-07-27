@@ -116,6 +116,12 @@ RSPdf >> g_filename_to_uri: absoluteFileName [
 ]
 
 { #category : #'ffi methods' }
+RSPdf >> g_free: p [
+
+	^ self ffiCall: #( void g_free #( void #* p ) ) module: GLibLibrary
+]
+
+{ #category : #'ffi methods' }
 RSPdf >> g_object_unref: handle [
 
 	self
@@ -219,5 +225,6 @@ RSPdf >> withPopplerPageHandlerDo: block [
 		self
 			g_object_unref: p;
 			g_object_unref: d;
-			g_bytes_unref: gbytes ]
+			g_bytes_unref: gbytes ";
+			g_free: uri " ]
 ]
