@@ -89,6 +89,23 @@ RSPdf >> fileReference: anObject [
 ]
 
 { #category : #'ffi methods' }
+RSPdf >> g_bytes_new: p size: s [
+
+	^ self
+		  ffiCall:
+		  #( void #* g_bytes_new #( const void #* p #, int s ) )
+		  module: GLibLibrary
+]
+
+{ #category : #'ffi methods' }
+RSPdf >> g_bytes_unref: p [
+
+	^ self
+		  ffiCall: #( void g_bytes_unref #( void #* p ) )
+		  module: GLibLibrary
+]
+
+{ #category : #'ffi methods' }
 RSPdf >> g_filename_to_uri: absoluteFileName [
 
 	^ self
@@ -146,6 +163,15 @@ RSPdf >> poppler_document_get_n_pages: document [
 ]
 
 { #category : #'ffi methods' }
+RSPdf >> poppler_document_new_from_bytes: bytes [
+
+	^ self
+		  ffiCall: #( void #* poppler_document_new_from_bytes
+			     #( void #* bytes #, NULL #, NULL ) )
+		  module: PopplerLibrary
+]
+
+{ #category : #'ffi methods' }
 RSPdf >> poppler_document_new_from_file: uri [
 
 	^ self
@@ -176,15 +202,22 @@ RSPdf >> poppler_page_render: p cairo: cr [
 { #category : #accessing }
 RSPdf >> withPopplerPageHandlerDo: block [
 
-	| p d uri |
+	| p d uri bytes gbytes |
 	uri := self g_filename_to_uri: self fileReference fullName.
 
-	d := self poppler_document_new_from_file: uri.
+	"d := self poppler_document_new_from_file: uri."
+
+	bytes := self fileReference binaryReadStreamDo: #contents.
+
+	gbytes := self g_bytes_new: bytes size: bytes size.
+
+	d := self poppler_document_new_from_bytes: gbytes.
 
 	p := self poppler_document: d get_page: self pageNumber - 1.
 
 	[ block value: p ] ensure: [
 		self
 			g_object_unref: p;
-			g_object_unref: d ]
+			g_object_unref: d;
+			g_bytes_unref: gbytes ]
 ]
