@@ -27,6 +27,31 @@ RSPdf class >> allPagesOfFileReference: fileReference [
 		  to: (p ifNil: [ 0 ])
 ]
 
+{ #category : #'instance creation' }
+RSPdf class >> compileTeX: texString times: iterations [
+
+	| tmpFileName fileReference last fullName cmd |
+	fileReference := FileReference newTempFilePrefix: 'RSPdf-' suffix: ''.
+
+	fullName := fileReference fullName.
+
+	last := fullName lastIndexOf: $/.
+
+	tmpFileName := fullName copyFrom: last + 1 to: fullName size.
+
+	fileReference writeStreamDo: [ :aStream |
+		aStream << texString withUnixLineEndings ].
+
+	cmd := 'xelatex -output-directory=' , fileReference parent fullName
+	       , ' ' , fullName.
+
+	iterations timesRepeat: [ LibC runCommand: cmd ].
+
+	^ self new
+		  fileReference: (fileReference fullName , '.pdf') asFileReference;
+		  yourself
+]
+
 { #category : #creating }
 RSPdf class >> pagesOfFileReference: fileReference from: from to: to [
 
