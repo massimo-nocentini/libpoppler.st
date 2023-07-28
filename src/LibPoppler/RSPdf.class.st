@@ -208,11 +208,10 @@ RSPdf >> poppler_page_render: p cairo: cr [
 { #category : #accessing }
 RSPdf >> withPopplerPageHandlerDo: block [
 
-	| p d uri bytes gbytes |
-	uri := self g_filename_to_uri: self fileReference fullName.
+	| p d bytes gbytes |
+	"uri := self g_filename_to_uri: self fileReference fullName.
 
-	"d := self poppler_document_new_from_file: uri."
-
+	d := self poppler_document_new_from_file: uri."
 	bytes := self fileReference binaryReadStreamDo: #contents.
 
 	gbytes := self g_bytes_new: bytes size: bytes size.
@@ -225,6 +224,5 @@ RSPdf >> withPopplerPageHandlerDo: block [
 		self
 			g_object_unref: p;
 			g_object_unref: d;
-			g_bytes_unref: gbytes ";
-			g_free: uri " ]
+			g_bytes_unref: gbytes ]
 ]
