@@ -42,8 +42,8 @@ RSPdf class >> compileTeX: texString times: iterations [
 	fileReference writeStreamDo: [ :aStream |
 		aStream << texString withUnixLineEndings ].
 
-	cmd := 'xelatex -output-directory=' , fileReference parent fullName
-	       , ' ' , fullName.
+	cmd := 'xelatex -halt-on-error -output-directory='
+	       , fileReference parent fullName , ' ' , fullName.
 
 	iterations timesRepeat: [ LibC runCommand: cmd ].
 
