@@ -1,31 +1,11 @@
 Class {
 	#name : #RSPdf,
-	#superclass : #RSBoundingShape,
+	#superclass : #Object,
 	#instVars : [
-		'fileReference',
-		'pageNumber'
+		'fileReference'
 	],
 	#category : #'LibPoppler-Roassal'
 }
-
-{ #category : #creating }
-RSPdf class >> allPagesOfFileReference: fileReference [
-
-	| p d uri shape |
-	shape := self new.
-
-	uri := shape g_filename_to_uri: fileReference fullName.
-
-	d := shape poppler_document_new_from_file: uri.
-
-	p := [ shape poppler_document_get_n_pages: d ] ensure: [
-		     shape g_object_unref: d ].
-
-	^ self
-		  pagesOfFileReference: fileReference
-		  from: 1
-		  to: (p ifNil: [ 0 ])
-]
 
 { #category : #'instance creation' }
 RSPdf class >> compileTeX: texString times: iterations [
@@ -52,53 +32,22 @@ RSPdf class >> compileTeX: texString times: iterations [
 		  yourself
 ]
 
-{ #category : #creating }
-RSPdf class >> pagesOfFileReference: fileReference from: from to: to [
+{ #category : #'ffi methods' }
+RSPdf >> acceptSlotDescriptorsVisitor: visitor [
 
-	| pages |
-	pages := RSGroup new.
-
-	from to: to do: [ :i |
-		| pdf |
-		pdf := self new
-			       fileReference: fileReference;
-			       pageNumber: i;
-			       yourself.
-
-		pages add: pdf ].
-
-	^ pages
-]
-
-{ #category : #visiting }
-RSPdf >> accept: visitor [
-
-	visitor visitPdf: self
+	^ visitor visitRSPdf: self
 ]
 
 { #category : #accessing }
-RSPdf >> computeEncompassingRectangle [
+RSPdf >> author [
 
-	| width height |
-	width := ByteArray new: 8.
-	height := ByteArray new: 8.
+	| author |
+	author := String empty.
 
-	self withPopplerPageHandlerDo: [ :popplerPageHandler |
-		self
-			poppler_page_get_size: popplerPageHandler
-			width: width
-			height: height ].
+	self withPopplerDocumentHandleDo: [ :docHandle |
+		author := self poppler_document_get_author: docHandle ].
 
-	^ Rectangle
-		  center: 0 @ 0
-		  extent: (width doubleAt: 1) @ (height doubleAt: 1)
-]
-
-{ #category : #dispatched }
-RSPdf >> drawOnAthensCairoCanvas: athensCairoCanvas [
-
-	self withPopplerPageHandlerDo: [ :p |
-		athensCairoCanvas renderPopplerPageHandle: p ofPdfShape: self ]
+	^ author
 ]
 
 { #category : #accessing }
@@ -154,33 +103,32 @@ RSPdf >> g_object_unref: handle [
 		module: GObjectLibrary
 ]
 
-{ #category : #initialization }
-RSPdf >> initialize [
-
-	super initialize.
-
-	self pageNumber: 1
-]
-
 { #category : #accessing }
-RSPdf >> pageNumber [
+RSPdf >> pages [
 
-	^ pageNumber
-]
+	| group |
+	group := RSGroup new.
 
-{ #category : #accessing }
-RSPdf >> pageNumber: anObject [
+	self withPopplerDocumentHandleDo: [ :docHandle |
+		1 to: (self poppler_document_get_n_pages: docHandle) do: [
+			:pageNumber |
+			| pageShape |
+			pageShape := RSPdfPage new
+				             pdf: self;
+				             pageNumber: pageNumber;
+				             yourself.
 
-	pageNumber := anObject
+			group add: pageShape ] ].
+
+	^ group
 ]
 
 { #category : #'ffi methods' }
-RSPdf >> poppler_document: document get_page: p [
+RSPdf >> poppler_document_get_author: document [
 
 	^ self
 		  ffiCall:
-		  #( void #* poppler_document_get_page #( void #* document #, int
-		        p ) )
+		  #( char #* poppler_document_get_author #( void #* document ) )
 		  module: PopplerLibrary
 ]
 
@@ -190,6 +138,15 @@ RSPdf >> poppler_document_get_n_pages: document [
 	^ self
 		  ffiCall:
 		  #( int poppler_document_get_n_pages #( void #* document ) )
+		  module: PopplerLibrary
+]
+
+{ #category : #'ffi methods' }
+RSPdf >> poppler_document_get_title: document [
+
+	^ self
+		  ffiCall:
+		  #( char #* poppler_document_get_title #( void #* document ) )
 		  module: PopplerLibrary
 ]
 
@@ -211,43 +168,30 @@ RSPdf >> poppler_document_new_from_file: uri [
 		  module: PopplerLibrary
 ]
 
-{ #category : #'ffi methods' }
-RSPdf >> poppler_page_get_size: p width: width height: height [
+{ #category : #accessing }
+RSPdf >> title [
 
-	^ self
-		  ffiCall:
-			  #( void poppler_page_get_size #( void #* p #, double #* width
-			        #, double #* height ) )
-		  module: PopplerLibrary
-]
+	| title |
+	title := String empty.
 
-{ #category : #'ffi methods' }
-RSPdf >> poppler_page_render: p cairo: cr [
+	self withPopplerDocumentHandleDo: [ :docHandle |
+		title := self poppler_document_get_title: docHandle ].
 
-	^ self
-		  ffiCall:
-		  #( void poppler_page_render #( void #* p #, void #* cr ) )
-		  module: PopplerLibrary
+	^ title
 ]
 
 { #category : #accessing }
-RSPdf >> withPopplerPageHandlerDo: block [
+RSPdf >> withPopplerDocumentHandleDo: block [
 
-	| p d bytes gbytes |
-	"uri := self g_filename_to_uri: self fileReference fullName.
-
-	d := self poppler_document_new_from_file: uri."
+	| d bytes gbytes |
 	bytes := self fileReference binaryReadStreamDo: #contents.
 
 	gbytes := self g_bytes_new: bytes size: bytes size.
 
 	d := self poppler_document_new_from_bytes: gbytes.
 
-	p := self poppler_document: d get_page: self pageNumber - 1.
-
-	[ block value: p ] ensure: [
+	[ block value: d ] ensure: [
 		self
-			g_object_unref: p;
 			g_object_unref: d;
 			g_bytes_unref: gbytes ]
 ]
