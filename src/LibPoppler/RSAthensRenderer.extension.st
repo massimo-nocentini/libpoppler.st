@@ -1,7 +1,7 @@
 Extension { #name : #RSAthensRenderer }
 
 { #category : #'*LibPoppler' }
-RSAthensRenderer >> visitPdf: pdfShape [
+RSAthensRenderer >> visitPdfPage: pdfShape [
 
 	| lbtranslation |
 	lbtranslation := (pdfShape extent / 2.0) asFloatPoint negated.

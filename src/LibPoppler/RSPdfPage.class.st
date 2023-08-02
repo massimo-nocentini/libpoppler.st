@@ -11,7 +11,7 @@ Class {
 { #category : #visiting }
 RSPdfPage >> accept: visitor [
 
-	visitor visitPdf: self
+	visitor visitPdfPage: self
 ]
 
 { #category : #accessing }
@@ -38,7 +38,7 @@ RSPdfPage >> drawOnAthensCairoCanvas: athensCairoCanvas [
 	self withPopplerPageHandleDo: [ :pageHandle |
 		athensCairoCanvas
 			renderPopplerPageHandle: pageHandle
-			ofPdfShape: self ]
+			ofPdfPage: self ]
 ]
 
 { #category : #initialization }
