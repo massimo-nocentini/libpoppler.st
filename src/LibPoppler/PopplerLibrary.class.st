@@ -1,16 +1,18 @@
 Class {
-	#name : #PopplerLibrary,
-	#superclass : #FFILibrary,
-	#category : #'LibPoppler-Library'
+	#name : 'PopplerLibrary',
+	#superclass : 'FFILibrary',
+	#category : 'LibPoppler-Library',
+	#package : 'LibPoppler',
+	#tag : 'Library'
 }
 
-{ #category : #'accessing platform' }
+{ #category : 'accessing platform' }
 PopplerLibrary >> unix64LibraryName [
 
 	^ FFIUnix64LibraryFinder findLibrary: 'libpoppler-glib.so'
 ]
 
-{ #category : #'accessing platform' }
+{ #category : 'accessing platform' }
 PopplerLibrary >> win32LibraryName [
 
 	^ FFIWindowsLibraryFinder findAnyLibrary:

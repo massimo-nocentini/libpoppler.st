@@ -1,13 +1,15 @@
 Class {
-	#name : #RSPdf,
-	#superclass : #Object,
+	#name : 'RSPdf',
+	#superclass : 'Object',
 	#instVars : [
 		'fileReference'
 	],
-	#category : #'LibPoppler-Roassal'
+	#category : 'LibPoppler-Roassal',
+	#package : 'LibPoppler',
+	#tag : 'Roassal'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 RSPdf class >> compileTeX: texString times: iterations [
 
 	| tmpFileName fileReference last fullName cmd |
@@ -32,13 +34,13 @@ RSPdf class >> compileTeX: texString times: iterations [
 		  yourself
 ]
 
-{ #category : #'ffi methods' }
+{ #category : 'ffi methods' }
 RSPdf >> acceptSlotDescriptorsVisitor: visitor [
 
 	^ visitor visitRSPdf: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSPdf >> author [
 
 	| author |
@@ -50,19 +52,19 @@ RSPdf >> author [
 	^ author
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSPdf >> fileReference [
 
 	^ fileReference
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSPdf >> fileReference: anObject [
 
 	fileReference := anObject
 ]
 
-{ #category : #'ffi methods' }
+{ #category : 'ffi methods' }
 RSPdf >> g_bytes_new: p size: s [
 
 	^ self
@@ -71,7 +73,7 @@ RSPdf >> g_bytes_new: p size: s [
 		  module: GLibLibrary
 ]
 
-{ #category : #'ffi methods' }
+{ #category : 'ffi methods' }
 RSPdf >> g_bytes_unref: p [
 
 	^ self
@@ -79,7 +81,7 @@ RSPdf >> g_bytes_unref: p [
 		  module: GLibLibrary
 ]
 
-{ #category : #'ffi methods' }
+{ #category : 'ffi methods' }
 RSPdf >> g_filename_to_uri: absoluteFileName [
 
 	^ self
@@ -89,13 +91,13 @@ RSPdf >> g_filename_to_uri: absoluteFileName [
 		  module: GLibLibrary
 ]
 
-{ #category : #'ffi methods' }
+{ #category : 'ffi methods' }
 RSPdf >> g_free: p [
 
 	^ self ffiCall: #( void g_free #( void #* p ) ) module: GLibLibrary
 ]
 
-{ #category : #'ffi methods' }
+{ #category : 'ffi methods' }
 RSPdf >> g_object_unref: handle [
 
 	self
@@ -103,7 +105,7 @@ RSPdf >> g_object_unref: handle [
 		module: GObjectLibrary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSPdf >> pages [
 
 	| group |
@@ -123,7 +125,7 @@ RSPdf >> pages [
 	^ group
 ]
 
-{ #category : #'ffi methods' }
+{ #category : 'ffi methods' }
 RSPdf >> poppler_document_get_author: document [
 
 	^ self
@@ -132,7 +134,7 @@ RSPdf >> poppler_document_get_author: document [
 		  module: PopplerLibrary
 ]
 
-{ #category : #'ffi methods' }
+{ #category : 'ffi methods' }
 RSPdf >> poppler_document_get_n_pages: document [
 
 	^ self
@@ -141,7 +143,7 @@ RSPdf >> poppler_document_get_n_pages: document [
 		  module: PopplerLibrary
 ]
 
-{ #category : #'ffi methods' }
+{ #category : 'ffi methods' }
 RSPdf >> poppler_document_get_title: document [
 
 	^ self
@@ -150,7 +152,7 @@ RSPdf >> poppler_document_get_title: document [
 		  module: PopplerLibrary
 ]
 
-{ #category : #'ffi methods' }
+{ #category : 'ffi methods' }
 RSPdf >> poppler_document_new_from_bytes: bytes [
 
 	^ self
@@ -159,7 +161,7 @@ RSPdf >> poppler_document_new_from_bytes: bytes [
 		  module: PopplerLibrary
 ]
 
-{ #category : #'ffi methods' }
+{ #category : 'ffi methods' }
 RSPdf >> poppler_document_new_from_file: uri [
 
 	^ self
@@ -168,7 +170,7 @@ RSPdf >> poppler_document_new_from_file: uri [
 		  module: PopplerLibrary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSPdf >> title [
 
 	| title |
@@ -180,7 +182,7 @@ RSPdf >> title [
 	^ title
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSPdf >> withPopplerDocumentHandleDo: block [
 
 	| d bytes gbytes |

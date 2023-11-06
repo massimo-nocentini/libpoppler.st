@@ -1,6 +1,6 @@
-Extension { #name : #RSAthensRenderer }
+Extension { #name : 'RSAthensRenderer' }
 
-{ #category : #'*LibPoppler' }
+{ #category : '*LibPoppler' }
 RSAthensRenderer >> visitPdfPage: pdfShape [
 
 	| lbtranslation |

@@ -1,20 +1,28 @@
 Class {
-	#name : #RSPdfPage,
-	#superclass : #RSBoundingShape,
+	#name : 'RSPdfPage',
+	#superclass : 'RSBoundingShape',
 	#instVars : [
 		'pdf',
 		'pageNumber'
 	],
-	#category : #'LibPoppler-Roassal'
+	#category : 'LibPoppler-Roassal',
+	#package : 'LibPoppler',
+	#tag : 'Roassal'
 }
 
-{ #category : #visiting }
+{ #category : 'testing' }
+RSPdfPage class >> isAbstract [
+
+	^ true
+]
+
+{ #category : 'visiting' }
 RSPdfPage >> accept: visitor [
 
 	visitor visitPdfPage: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSPdfPage >> computeEncompassingRectangle [
 
 	| width height |
@@ -32,7 +40,7 @@ RSPdfPage >> computeEncompassingRectangle [
 		  extent: (width doubleAt: 1) @ (height doubleAt: 1)
 ]
 
-{ #category : #dispatched }
+{ #category : 'dispatched' }
 RSPdfPage >> drawOnAthensCairoCanvas: athensCairoCanvas [
 
 	self withPopplerPageHandleDo: [ :pageHandle |
@@ -41,7 +49,7 @@ RSPdfPage >> drawOnAthensCairoCanvas: athensCairoCanvas [
 			ofPdfPage: self ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RSPdfPage >> initialize [
 
 	super initialize.
@@ -49,19 +57,19 @@ RSPdfPage >> initialize [
 	self pageNumber: 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSPdfPage >> pageNumber: anObject [
 
 	pageNumber := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSPdfPage >> pdf: anObject [
 
 	pdf := anObject
 ]
 
-{ #category : #'ffi methods' }
+{ #category : 'ffi methods' }
 RSPdfPage >> poppler_document: document get_page: p [
 
 	^ self
@@ -71,7 +79,7 @@ RSPdfPage >> poppler_document: document get_page: p [
 		  module: PopplerLibrary
 ]
 
-{ #category : #'ffi methods' }
+{ #category : 'ffi methods' }
 RSPdfPage >> poppler_page_get_size: p width: width height: height [
 
 	^ self
@@ -81,7 +89,7 @@ RSPdfPage >> poppler_page_get_size: p width: width height: height [
 		  module: PopplerLibrary
 ]
 
-{ #category : #'ffi methods' }
+{ #category : 'ffi methods' }
 RSPdfPage >> poppler_page_render: p cairo: cr [
 
 	^ self
@@ -90,7 +98,7 @@ RSPdfPage >> poppler_page_render: p cairo: cr [
 		  module: PopplerLibrary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSPdfPage >> withPopplerPageHandleDo: block [
 
 	pdf withPopplerDocumentHandleDo: [ :d |

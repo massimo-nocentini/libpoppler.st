@@ -1,6 +1,6 @@
-Extension { #name : #CTSlotDescriptorsVisitor }
+Extension { #name : 'CTSlotDescriptorsVisitor' }
 
-{ #category : #'*LibPoppler' }
+{ #category : '*LibPoppler' }
 CTSlotDescriptorsVisitor >> visitRSPdf: pdf [
 
 	^ {
