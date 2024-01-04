@@ -1,3 +1,17 @@
+"
+I am a class that allows the visualization of pdfs directly into Pharo.
+
+Consider to add the following visiting message for slot descriptions:
+
+```
+visitRSPdf: pdf
+
+	^ {
+		  (self newSlotDescriptorSelector: #author).
+		  (self newSlotDescriptorSelector: #title).
+		  (self newSlotDescriptorSelector: #pages) }
+```
+"
 Class {
 	#name : 'RSPdf',
 	#superclass : 'Object',
