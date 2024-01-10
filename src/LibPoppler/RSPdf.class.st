@@ -48,12 +48,6 @@ RSPdf class >> compileTeX: texString times: iterations [
 		  yourself
 ]
 
-{ #category : 'ffi methods' }
-RSPdf >> acceptSlotDescriptorsVisitor: visitor [
-
-	^ visitor visitRSPdf: self
-]
-
 { #category : 'accessing' }
 RSPdf >> author [
 
