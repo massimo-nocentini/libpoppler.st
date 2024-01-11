@@ -1,1 +1,1 @@
-Package { #name : #BaselineOfLibPoppler }
+Package { #name : 'BaselineOfLibPoppler' }
