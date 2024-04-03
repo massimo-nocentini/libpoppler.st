@@ -40,10 +40,7 @@ RSUMLClassPdfCalypso >> buildUmlCanvas [
 		                 into: #/.
 
 	pages := fileReference asPdf pages
-		         collect: [ :page |
-			         (page notedWithPad: Float goldenRatio)
-				         draggable;
-				         yourself ]
+		         collect: [ :page | page notedWithPad: Float goldenRatio ]
 		         as: RSGroup.
 
 	RSGridLayout new
