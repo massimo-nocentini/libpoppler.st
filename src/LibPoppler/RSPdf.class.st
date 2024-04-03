@@ -24,7 +24,7 @@ Class {
 }
 
 { #category : 'instance creation' }
-RSPdf class >> compileTeX: texString times: iterations [
+RSPdf class >> compile: texCompilerName TeX: texString times: iterations [
 
 	| tmpFileName fileReference last fullName cmd |
 	fileReference := FileReference newTempFilePrefix: 'RSPdf-' suffix: ''.
@@ -38,7 +38,7 @@ RSPdf class >> compileTeX: texString times: iterations [
 	fileReference writeStreamDo: [ :aStream |
 		aStream << texString withUnixLineEndings ].
 
-	cmd := self texCompilerName , ' -halt-on-error -output-directory='
+	cmd := texCompilerName , ' -halt-on-error -output-directory='
 	       , fileReference parent fullName , ' ' , fullName.
 
 	iterations timesRepeat: [ LibC runCommand: cmd ].
@@ -46,6 +46,12 @@ RSPdf class >> compileTeX: texString times: iterations [
 	^ self new
 		  fileReference: (fileReference fullName , '.pdf') asFileReference;
 		  yourself
+]
+
+{ #category : 'instance creation' }
+RSPdf class >> compileTeX: texString times: iterations [
+
+	^ self compile: self texCompilerName TeX: texString times: iterations
 ]
 
 { #category : 'instance creation' }
