@@ -38,7 +38,7 @@ RSPdf class >> compileTeX: texString times: iterations [
 	fileReference writeStreamDo: [ :aStream |
 		aStream << texString withUnixLineEndings ].
 
-	cmd := 'xelatex -halt-on-error -output-directory='
+	cmd := self texCompilerName , ' -halt-on-error -output-directory='
 	       , fileReference parent fullName , ' ' , fullName.
 
 	iterations timesRepeat: [ LibC runCommand: cmd ].
@@ -46,6 +46,12 @@ RSPdf class >> compileTeX: texString times: iterations [
 	^ self new
 		  fileReference: (fileReference fullName , '.pdf') asFileReference;
 		  yourself
+]
+
+{ #category : 'instance creation' }
+RSPdf class >> texCompilerName [
+
+	^ 'xelatex'
 ]
 
 { #category : 'accessing' }
