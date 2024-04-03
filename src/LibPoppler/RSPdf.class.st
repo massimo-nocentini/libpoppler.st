@@ -170,8 +170,17 @@ RSPdf >> poppler_document_get_title: document [
 RSPdf >> poppler_document_new_from_bytes: bytes [
 
 	^ self
+		  poppler_document_new_from_bytes: bytes
+		  password: nil
+		  error: ExternalAddress null
+]
+
+{ #category : 'ffi methods' }
+RSPdf >> poppler_document_new_from_bytes: bytes password: password error: e [
+
+	^ self
 		  ffiCall: #( void #* poppler_document_new_from_bytes
-			     #( void #* bytes #, NULL #, NULL ) )
+			     #( void #* bytes #, const char #* password #, void #* e ) )
 		  module: PopplerLibrary
 ]
 

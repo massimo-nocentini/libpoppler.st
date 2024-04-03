@@ -6,13 +6,13 @@ Class {
 	#tag : 'Library'
 }
 
-{ #category : 'accessing platform' }
+{ #category : 'accessing - platform' }
 PopplerLibrary >> unix64LibraryName [
 
 	^ FFIUnix64LibraryFinder findLibrary: 'libpoppler-glib.so'
 ]
 
-{ #category : 'accessing platform' }
+{ #category : 'accessing - platform' }
 PopplerLibrary >> win32LibraryName [
 
 	^ FFIWindowsLibraryFinder findAnyLibrary:
