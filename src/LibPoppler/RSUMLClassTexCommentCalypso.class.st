@@ -11,7 +11,7 @@ Class {
 	#tag : 'Roassal'
 }
 
-{ #category : 'accessing - comment' }
+{ #category : 'as yet unclassified' }
 RSUMLClassTexCommentCalypso class >> beamerTeXString [
 
 	<tex: 'pdflatex' times: 2 pagesPerRow: 1>
@@ -36,7 +36,7 @@ This is some text in the first frame. This is some text in the first frame. This
 '
 ]
 
-{ #category : 'accessing - comment' }
+{ #category : 'as yet unclassified' }
 RSUMLClassTexCommentCalypso class >> shortDocumentTeXString [
 
 	<tex: 'pdflatex' times: 2 pagesPerRow: 2>

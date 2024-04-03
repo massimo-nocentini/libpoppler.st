@@ -9,6 +9,7 @@ Class {
 LibPopplerTestCase >> examplePBE_objectModel [
 
 	<script: 'self new examplePBE_objectModel'>
+	<pdf: #( 'pbe-object-model.pdf' ) pagesPerRow: 2>
 	self testPBE_objectModel pages inspect
 ]
 
