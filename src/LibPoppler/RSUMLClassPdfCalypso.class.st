@@ -31,9 +31,7 @@ RSUMLClassPdfCalypso >> buildUmlCanvas [
 	pragma := (method pragmaAt: #pdf:pagesPerRow:) ifNil: [
 		          ^ RSCanvas new ].
 
-	repo := IceRepository
-		        atPackage: self class package
-		        ifAbsent: [ ^ RSCanvas new ].
+	repo := self class iceRepositoryIfAbsent: [ ^ RSCanvas new ].
 
 	fileReference := (pragma argumentNamed: #pdf)
 		                 inject: repo repositoryDirectory

@@ -60,7 +60,7 @@ LibPopplerTestCase >> examplePBE_objectModel [
 LibPopplerTestCase >> testPBE_objectModel [
 
 	| pdf |
-	pdf := ((IceRepository repositoryNamed: 'libpoppler.st')
+	pdf := ((self class iceRepositoryIfAbsent: [ Error signal ])
 		        repositoryDirectory / 'pbe-object-model.pdf')
 		       asFileReference asPdf.
 
