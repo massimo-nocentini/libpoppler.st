@@ -6,7 +6,7 @@ Class {
 }
 
 { #category : 'TeX chunks' }
-LibPopplerTestCase class >> beamerTeXString [
+LibPopplerTestCase >> beamerTeXString [
 
 	<tex: 'pdflatex' times: 2 pagesPerRow: 1>
 	'
@@ -30,8 +30,16 @@ This is some text in the first frame. This is some text in the first frame. This
 '
 ]
 
+{ #category : 'examples' }
+LibPopplerTestCase >> examplePBE_objectModel [
+
+	<script: 'self new examplePBE_objectModel'>
+	<pdf: #( 'pbe-object-model.pdf' ) pagesPerRow: 2>
+	self testPBE_objectModel pages inspect
+]
+
 { #category : 'TeX chunks' }
-LibPopplerTestCase class >> shortDocumentTeXString [
+LibPopplerTestCase >> shortDocumentTeXString [
 
 	<tex: 'pdflatex' times: 2 pagesPerRow: 2>
 	'
@@ -48,15 +56,7 @@ to our first \LaTeX{} document!
 	'
 ]
 
-{ #category : 'examples' }
-LibPopplerTestCase >> examplePBE_objectModel [
-
-	<script: 'self new examplePBE_objectModel'>
-	<pdf: #( 'pbe-object-model.pdf' ) pagesPerRow: 2>
-	self testPBE_objectModel pages inspect
-]
-
-{ #category : 'examples' }
+{ #category : 'tests' }
 LibPopplerTestCase >> testPBE_objectModel [
 
 	| pdf |
