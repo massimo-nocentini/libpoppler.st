@@ -5,6 +5,49 @@ Class {
 	#package : 'LibPoppler-Tests'
 }
 
+{ #category : 'TeX chunks' }
+LibPopplerTestCase class >> beamerTeXString [
+
+	<tex: 'pdflatex' times: 2 pagesPerRow: 1>
+	'
+\documentclass{beamer}
+%Information to be included in the title page:
+\title{Sample title}
+\author{Anonymous}
+\institute{Overleaf}
+\date{2021}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Sample frame title}
+This is some text in the first frame. This is some text in the first frame. This is some text in the first frame.
+\end{frame}
+
+\end{document}
+'
+]
+
+{ #category : 'TeX chunks' }
+LibPopplerTestCase class >> shortDocumentTeXString [
+
+	<tex: 'pdflatex' times: 2 pagesPerRow: 2>
+	'
+\documentclass[12pt, letterpaper]{article}
+\title{My first LaTeX document}
+\author{Hubert Farnsworth\thanks{Funded by the Overleaf team.}}
+\date{August 2022}
+\begin{document}
+\maketitle
+We have now added a title, author and date 
+\newpage
+to our first \LaTeX{} document!
+\end{document}
+	'
+]
+
 { #category : 'examples' }
 LibPopplerTestCase >> examplePBE_objectModel [
 
@@ -21,7 +64,7 @@ LibPopplerTestCase >> testPBE_objectModel [
 		        repositoryDirectory / 'pbe-object-model.pdf')
 		       asFileReference asPdf.
 
-	self assert: pdf pages size equals: 272 - 259 + 1.
+	self assert: pdf pages size equals: 272 - 258.
 
 	^ pdf
 ]
