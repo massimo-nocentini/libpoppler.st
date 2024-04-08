@@ -26,7 +26,7 @@ Class {
 { #category : 'instance creation' }
 RSPdf class >> compile: texCompilerName TeX: texString times: iterations [
 
-	| tmpFileName fileReference last fullName cmd |
+	| tmpFileName fileReference last fullName cmd stream |
 	fileReference := FileReference newTempFilePrefix: 'RSPdf-' suffix: ''.
 
 	fullName := fileReference fullName.
@@ -41,7 +41,12 @@ RSPdf class >> compile: texCompilerName TeX: texString times: iterations [
 	cmd := texCompilerName , ' -halt-on-error -output-directory='
 	       , fileReference parent fullName , ' ' , fullName.
 
-	iterations timesRepeat: [ LibC runCommand: cmd ].
+	stream := Smalltalk tools transcript.
+
+	iterations timesRepeat: [
+		LibC uniqueInstance pipe: cmd writeStream: stream.
+
+		stream flush ].
 
 	^ self new
 		  fileReference: (fileReference fullName , '.pdf') asFileReference;
