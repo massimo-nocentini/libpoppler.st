@@ -44,7 +44,7 @@ RSPdf class >> compile: texCompilerName TeX: texString times: iterations [
 	stream := Smalltalk tools transcript.
 
 	iterations timesRepeat: [
-		LibC uniqueInstance pipe: cmd writeStream: stream.
+		self libc pipe: cmd writeStream: stream.
 
 		stream flush ].
 
@@ -57,6 +57,12 @@ RSPdf class >> compile: texCompilerName TeX: texString times: iterations [
 RSPdf class >> compileTeX: texString times: iterations [
 
 	^ self compile: self texCompilerName TeX: texString times: iterations
+]
+
+{ #category : 'instance creation' }
+RSPdf class >> libc [
+
+	^ LibC uniqueInstance
 ]
 
 { #category : 'instance creation' }

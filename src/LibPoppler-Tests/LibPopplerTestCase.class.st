@@ -68,3 +68,74 @@ LibPopplerTestCase >> testPBE_objectModel [
 
 	^ pdf
 ]
+
+{ #category : 'TeX chunks' }
+LibPopplerTestCase >> tikZGraphTeXString [
+
+	<tex: 'pdflatex' times: 2 pagesPerRow: 2>
+	'
+\documentclass{standalone}
+\usepackage{pgfplots}
+\usetikzlibrary{graphs}
+%\usepgfplotslibrary{external}
+%\tikzexternalize
+\begin{document}
+\usetikzlibrary {mindmap}
+\begin{tikzpicture}
+  \path[mindmap,concept color=black,text=white]
+    node[concept] {Computer Science}
+    [clockwise from=0]
+    % note that `sibling angle'' can only be defined in
+    % `level 1 concept/.append style={}''
+    child[concept color=green!50!black] {
+      node[concept] {practical}
+      [clockwise from=90]
+      child { node[concept] {algorithms} }
+      child { node[concept] {data structures} }
+      child { node[concept] {pro\-gramming languages} }
+      child { node[concept] {software engineer\-ing} }
+    }
+    % note that the `concept color'' is passed to the `child''(!)
+    child[concept color=blue] {
+      node[concept] {applied}
+      [clockwise from=-30]
+      child { node[concept] {databases} }
+      child { node[concept] {WWW} }
+    }
+    child[concept color=red] { node[concept] {technical} }
+    child[concept color=orange] { node[concept] {theoretical} };
+\end{tikzpicture}
+\end{document}
+'
+]
+
+{ #category : 'TeX chunks' }
+LibPopplerTestCase >> tikZTeXString [
+
+	<tex: 'pdflatex' times: 2 pagesPerRow: 2>
+	'
+\documentclass{standalone}
+%\usepackage[margin=0.5in]{geometry}
+\usepackage{pgfplots}
+%\pgfplotsset{width=10cm,compat=1.9}
+%\usepgfplotslibrary{external}
+%\tikzexternalize
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+    title=Example using the mesh parameter,
+    hide axis,
+    colormap/cool,
+]
+\addplot3[
+    mesh,
+    samples=50,
+    domain=-8:8,
+]
+{sin(deg(sqrt(x^2+y^2)))/sqrt(x^2+y^2)};
+\addlegendentry{\(\frac{sin(r)}{r}\)}
+\end{axis}
+\end{tikzpicture}
+\end{document}
+'
+]
