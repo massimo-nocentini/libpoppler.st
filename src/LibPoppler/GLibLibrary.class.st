@@ -6,6 +6,13 @@ Class {
 	#tag : 'Library'
 }
 
+{ #category : 'accessing - platform' }
+GLibLibrary >> macLibraryName [
+
+	^ FFIMacLibraryFinder findLibrary:
+		  '/usr/local/Cellar/glib/2.80.0_2/lib/libglib-2.0.dylib'
+]
+
 { #category : 'accessing platform' }
 GLibLibrary >> unix64LibraryName [
 
