@@ -226,7 +226,11 @@ RSPdf >> title [
 RSPdf >> withPopplerDocumentHandleDo: block [
 
 	| d bytes gbytes |
-	bytes := self fileReference binaryReadStreamDo: #contents.
+	bytes := self fileReference exists
+		         ifTrue: [ self fileReference binaryReadStreamDo: #contents ]
+		         ifFalse: [
+			         Smalltalk tools transcript open.
+			         ^ self ].
 
 	gbytes := self g_bytes_new: bytes size: bytes size.
 
