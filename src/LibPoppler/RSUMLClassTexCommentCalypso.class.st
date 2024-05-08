@@ -35,7 +35,7 @@ RSUMLClassTexCommentCalypso >> buildUmlCanvas [
 		        (method sourceNode body statements collect: [ :each |
 			         each value ])) ifEmpty: [ ^ RSCanvas new ].
 
-	pdf := RSPdf
+	pdf := PopplerPdf
 		       compile: (pragma argumentNamed: #tex)
 		       TeX: tex
 		       times: (pragma argumentNamed: #times).

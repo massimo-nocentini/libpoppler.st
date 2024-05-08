@@ -3,7 +3,7 @@ Extension { #name : 'FileReference' }
 { #category : '*LibPoppler' }
 FileReference >> asPdf [
 
-	^ RSPdf new
+	^ PopplerPdf new
 		  fileReference: self;
 		  yourself
 ]

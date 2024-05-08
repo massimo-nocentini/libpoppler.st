@@ -1,4 +1,6 @@
 "
+# RSPdf class
+
 I am a class that allows the visualization of pdfs directly into Pharo.
 
 Consider to add the following visiting message for slot descriptions:
@@ -13,7 +15,7 @@ visitRSPdf: pdf
 ```
 "
 Class {
-	#name : 'RSPdf',
+	#name : 'PopplerPdf',
 	#superclass : 'Object',
 	#instVars : [
 		'fileReference'
@@ -24,7 +26,7 @@ Class {
 }
 
 { #category : 'instance creation' }
-RSPdf class >> compile: texCompilerName TeX: texString times: iterations [
+PopplerPdf class >> compile: texCompilerName TeX: texString times: iterations [
 
 	| tmpFileName fileReference last fullName cmd stream |
 	fileReference := FileReference newTempFilePrefix: 'RSPdf-' suffix: ''.
@@ -54,25 +56,25 @@ RSPdf class >> compile: texCompilerName TeX: texString times: iterations [
 ]
 
 { #category : 'instance creation' }
-RSPdf class >> compileTeX: texString times: iterations [
+PopplerPdf class >> compileTeX: texString times: iterations [
 
 	^ self compile: self texCompilerName TeX: texString times: iterations
 ]
 
 { #category : 'instance creation' }
-RSPdf class >> libc [
+PopplerPdf class >> libc [
 
 	^ LibC uniqueInstance
 ]
 
 { #category : 'instance creation' }
-RSPdf class >> texCompilerName [
+PopplerPdf class >> texCompilerName [
 
 	^ 'xelatex'
 ]
 
 { #category : 'accessing' }
-RSPdf >> author [
+PopplerPdf >> author [
 
 	| author |
 	author := String empty.
@@ -84,19 +86,19 @@ RSPdf >> author [
 ]
 
 { #category : 'accessing' }
-RSPdf >> fileReference [
+PopplerPdf >> fileReference [
 
 	^ fileReference
 ]
 
 { #category : 'accessing' }
-RSPdf >> fileReference: anObject [
+PopplerPdf >> fileReference: anObject [
 
 	fileReference := anObject
 ]
 
 { #category : 'ffi methods' }
-RSPdf >> g_bytes_new: p size: s [
+PopplerPdf >> g_bytes_new: p size: s [
 
 	^ self
 		  ffiCall:
@@ -105,7 +107,7 @@ RSPdf >> g_bytes_new: p size: s [
 ]
 
 { #category : 'ffi methods' }
-RSPdf >> g_bytes_unref: p [
+PopplerPdf >> g_bytes_unref: p [
 
 	^ self
 		  ffiCall: #( void g_bytes_unref #( void #* p ) )
@@ -113,7 +115,7 @@ RSPdf >> g_bytes_unref: p [
 ]
 
 { #category : 'ffi methods' }
-RSPdf >> g_filename_to_uri: absoluteFileName [
+PopplerPdf >> g_filename_to_uri: absoluteFileName [
 
 	^ self
 		  ffiCall:
@@ -123,13 +125,13 @@ RSPdf >> g_filename_to_uri: absoluteFileName [
 ]
 
 { #category : 'ffi methods' }
-RSPdf >> g_free: p [
+PopplerPdf >> g_free: p [
 
 	^ self ffiCall: #( void g_free #( void #* p ) ) module: GLibLibrary
 ]
 
 { #category : 'ffi methods' }
-RSPdf >> g_object_unref: handle [
+PopplerPdf >> g_object_unref: handle [
 
 	self
 		ffiCall: #( void g_object_unref #( void #* handle ) )
@@ -137,7 +139,7 @@ RSPdf >> g_object_unref: handle [
 ]
 
 { #category : 'accessing' }
-RSPdf >> pages [
+PopplerPdf >> pages [
 
 	| group |
 	group := RSGroup new.
@@ -157,7 +159,7 @@ RSPdf >> pages [
 ]
 
 { #category : 'ffi methods' }
-RSPdf >> poppler_document_get_author: document [
+PopplerPdf >> poppler_document_get_author: document [
 
 	^ self
 		  ffiCall:
@@ -166,7 +168,7 @@ RSPdf >> poppler_document_get_author: document [
 ]
 
 { #category : 'ffi methods' }
-RSPdf >> poppler_document_get_n_pages: document [
+PopplerPdf >> poppler_document_get_n_pages: document [
 
 	^ self
 		  ffiCall:
@@ -175,7 +177,7 @@ RSPdf >> poppler_document_get_n_pages: document [
 ]
 
 { #category : 'ffi methods' }
-RSPdf >> poppler_document_get_title: document [
+PopplerPdf >> poppler_document_get_title: document [
 
 	^ self
 		  ffiCall:
@@ -184,7 +186,7 @@ RSPdf >> poppler_document_get_title: document [
 ]
 
 { #category : 'ffi methods' }
-RSPdf >> poppler_document_new_from_bytes: bytes [
+PopplerPdf >> poppler_document_new_from_bytes: bytes [
 
 	^ self
 		  poppler_document_new_from_bytes: bytes
@@ -193,7 +195,7 @@ RSPdf >> poppler_document_new_from_bytes: bytes [
 ]
 
 { #category : 'ffi methods' }
-RSPdf >> poppler_document_new_from_bytes: bytes password: password error: e [
+PopplerPdf >> poppler_document_new_from_bytes: bytes password: password error: e [
 
 	^ self
 		  ffiCall: #( void #* poppler_document_new_from_bytes
@@ -202,7 +204,7 @@ RSPdf >> poppler_document_new_from_bytes: bytes password: password error: e [
 ]
 
 { #category : 'ffi methods' }
-RSPdf >> poppler_document_new_from_file: uri [
+PopplerPdf >> poppler_document_new_from_file: uri [
 
 	^ self
 		  ffiCall: #( void #* poppler_document_new_from_file
@@ -211,7 +213,7 @@ RSPdf >> poppler_document_new_from_file: uri [
 ]
 
 { #category : 'accessing' }
-RSPdf >> title [
+PopplerPdf >> title [
 
 	| title |
 	title := String empty.
@@ -223,7 +225,7 @@ RSPdf >> title [
 ]
 
 { #category : 'accessing' }
-RSPdf >> withPopplerDocumentHandleDo: block [
+PopplerPdf >> withPopplerDocumentHandleDo: block [
 
 	| d bytes gbytes |
 	bytes := self fileReference exists
