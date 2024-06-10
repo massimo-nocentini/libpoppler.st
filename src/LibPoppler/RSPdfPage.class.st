@@ -87,12 +87,12 @@ RSPdfPage >> poppler_document: document get_page: p [
 ]
 
 { #category : 'ffi methods' }
-RSPdfPage >> poppler_page_get_size: p width: width height: height [
+RSPdfPage >> poppler_page_get_size: p width: w height: h [
 
 	^ self
 		  ffiCall:
-			  #( void poppler_page_get_size #( void #* p #, double #* width
-			        #, double #* height ) )
+			  #( void poppler_page_get_size #( void #* p #, double #* w #, double
+			        #* h ) )
 		  module: PopplerLibrary
 ]
 
