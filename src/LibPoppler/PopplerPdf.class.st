@@ -23,9 +23,7 @@ Class {
 		'fileReference',
 		'author',
 		'title',
-		'pages',
-		'gbytesHandle',
-		'popplerDocHandle'
+		'pages'
 	],
 	#category : 'LibPoppler-Roassal',
 	#package : 'LibPoppler',
@@ -67,23 +65,7 @@ PopplerPdf class >> compileTeX: texString times: iterations [
 ]
 
 { #category : 'finalization' }
-PopplerPdf class >> deallocateHandle: aPair [
-
-	self
-		g_object_unref: aPair second;
-		g_bytes_unref: aPair first
-]
-
-{ #category : 'primitives' }
-PopplerPdf class >> g_bytes_unref: anExternalAddress [
-
-	^ self
-		  ffiCall: #( void g_bytes_unref #( void #* anExternalAddress ) )
-		  module: GLibLibrary
-]
-
-{ #category : 'primitives' }
-PopplerPdf class >> g_object_unref: anExternalAddress [
+PopplerPdf class >> deallocateHandle: anExternalAddress [
 
 	self
 		ffiCall: #( void g_object_unref #( void #* anExternalAddress ) )
@@ -129,23 +111,30 @@ PopplerPdf >> g_bytes_new: p size: s [
 		  module: GLibLibrary
 ]
 
+{ #category : 'primitives' }
+PopplerPdf >> g_bytes_unref: anExternalAddress [
+
+	^ self
+		  ffiCall: #( void g_bytes_unref #( void #* anExternalAddress ) )
+		  module: GLibLibrary
+]
+
 { #category : 'initialization' }
 PopplerPdf >> load [
 
 	(self fileReference isNotNil and: [ self fileReference exists ])
 		ifTrue: [
-			| bytes |
+			| bytes gbytesHandle |
 			bytes := self fileReference binaryReadStreamDo: #contents.
 			gbytesHandle := self g_bytes_new: bytes size: bytes size.
 
-			popplerDocHandle := self poppler_document_new_from_bytes:
-				                    gbytesHandle.
+			handle := self poppler_document_new_from_bytes: gbytesHandle.
 
-			author := self poppler_document_get_author: popplerDocHandle.
-			title := self poppler_document_get_title: popplerDocHandle.
+			author := self poppler_document_get_author: self getHandle.
+			title := self poppler_document_get_title: self getHandle.
 
 			pages := RSGroup new.
-			1 to: (self poppler_document_get_n_pages: popplerDocHandle) do: [
+			1 to: (self poppler_document_get_n_pages: self getHandle) do: [
 				:pageNumber |
 				pages add: (RSPdfPage new
 						 pdf: self;
@@ -153,7 +142,7 @@ PopplerPdf >> load [
 						 load;
 						 yourself) ].
 
-			handle := Array with: popplerDocHandle with: gbytesHandle ]
+			self g_bytes_unref: gbytesHandle ]
 		ifFalse: [ Error signal: 'Cannot load the desired pdf.' ]
 ]
 
@@ -212,10 +201,4 @@ PopplerPdf >> poppler_document_new_from_bytes: bytes password: password error: e
 PopplerPdf >> title [
 
 	^ title
-]
-
-{ #category : 'accessing' }
-PopplerPdf >> withPopplerDocumentHandleDo: block [
-
-	block value: popplerDocHandle
 ]

@@ -48,21 +48,20 @@ RSPdfPage >> initialize [
 { #category : 'accessing' }
 RSPdfPage >> load [
 
-	pdf withPopplerDocumentHandleDo: [ :popplerDocHandle |
-		handle := self
-			          poppler_document: popplerDocHandle
-			          get_page: pageNumber - 1.
+	handle := self
+		          poppler_document: pdf getHandle
+		          get_page: pageNumber - 1.
 
-		width := ByteArray new: 8.
-		height := ByteArray new: 8.
+	width := ByteArray new: 8.
+	height := ByteArray new: 8.
 
-		self
-			poppler_page_get_size: self getHandle
-			width: width
-			height: height.
+	self
+		poppler_page_get_size: self getHandle
+		width: width
+		height: height.
 
-		width := width doubleAt: 1.
-		height := height doubleAt: 1 ]
+	width := width doubleAt: 1.
+	height := height doubleAt: 1
 ]
 
 { #category : 'accessing' }
@@ -110,10 +109,4 @@ RSPdfPage >> poppler_page_render: p cairo: cr [
 		  ffiCall:
 		  #( void poppler_page_render #( void #* p #, void #* cr ) )
 		  module: PopplerLibrary
-]
-
-{ #category : 'accessing' }
-RSPdfPage >> withPopplerPageHandleDo: block [
-
-	block value: self getHandle
 ]
