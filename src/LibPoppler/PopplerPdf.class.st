@@ -143,7 +143,9 @@ PopplerPdf >> load [
 						 yourself) ].
 
 			self g_bytes_unref: gbytesHandle ]
-		ifFalse: [ Error signal: 'Cannot load the desired pdf.' ]
+		ifFalse: [
+			Smalltalk tools transcript open.
+			Error signal: 'Cannot load the desired pdf.' ]
 ]
 
 { #category : 'accessing' }
