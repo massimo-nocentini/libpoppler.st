@@ -34,15 +34,6 @@ RSPdfPage >> computeEncompassingRectangle [
 	^ Rectangle center: 0 @ 0 extent: width @ height
 ]
 
-{ #category : 'dispatched' }
-RSPdfPage >> drawOnAthensCairoCanvas: athensCairoCanvas [
-
-	self withPopplerPageHandleDo: [ :pageHandle |
-		athensCairoCanvas
-			renderPopplerPageHandle: pageHandle
-			ofPdfPage: self ]
-]
-
 { #category : 'initialization' }
 RSPdfPage >> initialize [
 
@@ -104,6 +95,12 @@ RSPdfPage >> poppler_page_get_size: p width: width height: height [
 			  #( void poppler_page_get_size #( void #* p #, double #* width
 			        #, double #* height ) )
 		  module: PopplerLibrary
+]
+
+{ #category : 'ffi methods' }
+RSPdfPage >> poppler_page_render: cr [
+
+	^ self poppler_page_render: self getHandle cairo: cr
 ]
 
 { #category : 'ffi methods' }

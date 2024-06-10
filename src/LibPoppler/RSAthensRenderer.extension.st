@@ -11,5 +11,5 @@ RSAthensRenderer >> visitPdfPage: pdfShape [
 	athensCanvas pathTransform loadAffineTransform: matrix.
 	athensCanvas setPathMatrix.
 
-	pdfShape drawOnAthensCairoCanvas: athensCanvas
+	athensCanvas renderPopplerPdfPage: pdfShape
 ]
