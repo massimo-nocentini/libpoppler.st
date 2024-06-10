@@ -17,8 +17,15 @@ visitRSPdf: pdf
 Class {
 	#name : 'PopplerPdf',
 	#superclass : 'Object',
+	#traits : 'TExternalAddressHolder',
+	#classTraits : 'TExternalAddressHolder classTrait',
 	#instVars : [
-		'fileReference'
+		'fileReference',
+		'author',
+		'title',
+		'pages',
+		'gbytesHandle',
+		'popplerDocHandle'
 	],
 	#category : 'LibPoppler-Roassal',
 	#package : 'LibPoppler',
@@ -50,15 +57,37 @@ PopplerPdf class >> compile: texCompilerName TeX: texString times: iterations [
 
 		stream flush ].
 
-	^ self new
-		  fileReference: (fileReference fullName , '.pdf') asFileReference;
-		  yourself
+	^ (fileReference fullName , '.pdf') asFileReference asPdf
 ]
 
 { #category : 'instance creation' }
 PopplerPdf class >> compileTeX: texString times: iterations [
 
 	^ self compile: self texCompilerName TeX: texString times: iterations
+]
+
+{ #category : 'finalization' }
+PopplerPdf class >> deallocateHandle: aPair [
+
+	self
+		g_object_unref: aPair second;
+		g_bytes_unref: aPair first
+]
+
+{ #category : 'primitives' }
+PopplerPdf class >> g_bytes_unref: anExternalAddress [
+
+	^ self
+		  ffiCall: #( void g_bytes_unref #( void #* anExternalAddress ) )
+		  module: GLibLibrary
+]
+
+{ #category : 'primitives' }
+PopplerPdf class >> g_object_unref: anExternalAddress [
+
+	self
+		ffiCall: #( void g_object_unref #( void #* anExternalAddress ) )
+		module: GObjectLibrary
 ]
 
 { #category : 'instance creation' }
@@ -75,12 +104,6 @@ PopplerPdf class >> texCompilerName [
 
 { #category : 'accessing' }
 PopplerPdf >> author [
-
-	| author |
-	author := String empty.
-
-	self withPopplerDocumentHandleDo: [ :docHandle |
-		author := self poppler_document_get_author: docHandle ].
 
 	^ author
 ]
@@ -106,56 +129,38 @@ PopplerPdf >> g_bytes_new: p size: s [
 		  module: GLibLibrary
 ]
 
-{ #category : 'ffi methods' }
-PopplerPdf >> g_bytes_unref: p [
+{ #category : 'initialization' }
+PopplerPdf >> load [
 
-	^ self
-		  ffiCall: #( void g_bytes_unref #( void #* p ) )
-		  module: GLibLibrary
-]
+	(self fileReference isNotNil and: [ self fileReference exists ])
+		ifTrue: [
+			| bytes |
+			bytes := self fileReference binaryReadStreamDo: #contents.
+			gbytesHandle := self g_bytes_new: bytes size: bytes size.
 
-{ #category : 'ffi methods' }
-PopplerPdf >> g_filename_to_uri: absoluteFileName [
+			popplerDocHandle := self poppler_document_new_from_bytes:
+				                    gbytesHandle.
 
-	^ self
-		  ffiCall:
-			  #( char #* g_filename_to_uri #( const char #* absoluteFileName
-			        #, NULL #, NULL ) )
-		  module: GLibLibrary
-]
+			author := self poppler_document_get_author: popplerDocHandle.
+			title := self poppler_document_get_title: popplerDocHandle.
 
-{ #category : 'ffi methods' }
-PopplerPdf >> g_free: p [
+			pages := RSGroup new.
+			1 to: (self poppler_document_get_n_pages: popplerDocHandle) do: [
+				:pageNumber |
+				pages add: (RSPdfPage new
+						 pdf: self;
+						 pageNumber: pageNumber;
+						 load;
+						 yourself) ].
 
-	^ self ffiCall: #( void g_free #( void #* p ) ) module: GLibLibrary
-]
-
-{ #category : 'ffi methods' }
-PopplerPdf >> g_object_unref: handle [
-
-	self
-		ffiCall: #( void g_object_unref #( void #* handle ) )
-		module: GObjectLibrary
+			handle := Array with: popplerDocHandle with: gbytesHandle ]
+		ifFalse: [ Error signal: 'Cannot load the desired pdf.' ]
 ]
 
 { #category : 'accessing' }
 PopplerPdf >> pages [
 
-	| group |
-	group := RSGroup new.
-
-	self withPopplerDocumentHandleDo: [ :docHandle |
-		1 to: (self poppler_document_get_n_pages: docHandle) do: [
-			:pageNumber |
-			| pageShape |
-			pageShape := RSPdfPage new
-				             pdf: self;
-				             pageNumber: pageNumber;
-				             yourself.
-
-			group add: pageShape ] ].
-
-	^ group
+	^ pages
 ]
 
 { #category : 'ffi methods' }
@@ -190,7 +195,7 @@ PopplerPdf >> poppler_document_new_from_bytes: bytes [
 
 	^ self
 		  poppler_document_new_from_bytes: bytes
-		  password: nil
+		  password: ExternalAddress null
 		  error: ExternalAddress null
 ]
 
@@ -203,23 +208,8 @@ PopplerPdf >> poppler_document_new_from_bytes: bytes password: password error: e
 		  module: PopplerLibrary
 ]
 
-{ #category : 'ffi methods' }
-PopplerPdf >> poppler_document_new_from_file: uri [
-
-	^ self
-		  ffiCall: #( void #* poppler_document_new_from_file
-			     #( const char #* uri #, NULL #, NULL ) )
-		  module: PopplerLibrary
-]
-
 { #category : 'accessing' }
 PopplerPdf >> title [
-
-	| title |
-	title := String empty.
-
-	self withPopplerDocumentHandleDo: [ :docHandle |
-		title := self poppler_document_get_title: docHandle ].
 
 	^ title
 ]
@@ -227,19 +217,5 @@ PopplerPdf >> title [
 { #category : 'accessing' }
 PopplerPdf >> withPopplerDocumentHandleDo: block [
 
-	| d bytes gbytes |
-	bytes := self fileReference exists
-		         ifTrue: [ self fileReference binaryReadStreamDo: #contents ]
-		         ifFalse: [
-			         Smalltalk tools transcript open.
-			         ^ self ].
-
-	gbytes := self g_bytes_new: bytes size: bytes size.
-
-	d := self poppler_document_new_from_bytes: gbytes.
-
-	[ block value: d ] ensure: [
-		self
-			g_object_unref: d;
-			g_bytes_unref: gbytes ]
+	block value: popplerDocHandle
 ]

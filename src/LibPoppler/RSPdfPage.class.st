@@ -1,19 +1,25 @@
 Class {
 	#name : 'RSPdfPage',
 	#superclass : 'RSBoundingShape',
+	#traits : 'TExternalAddressHolder',
+	#classTraits : 'TExternalAddressHolder classTrait',
 	#instVars : [
 		'pdf',
-		'pageNumber'
+		'pageNumber',
+		'width',
+		'height'
 	],
 	#category : 'LibPoppler-Roassal',
 	#package : 'LibPoppler',
 	#tag : 'Roassal'
 }
 
-{ #category : 'testing' }
-RSPdfPage class >> isAbstract [
+{ #category : 'finalization' }
+RSPdfPage class >> deallocateHandle: anExternalAddress [
 
-	^ true
+	self
+		ffiCall: #( void g_object_unref #( void #* anExternalAddress ) )
+		module: GObjectLibrary
 ]
 
 { #category : 'visiting' }
@@ -25,19 +31,7 @@ RSPdfPage >> accept: visitor [
 { #category : 'accessing' }
 RSPdfPage >> computeEncompassingRectangle [
 
-	| width height |
-	width := ByteArray new: 8.
-	height := ByteArray new: 8.
-
-	self withPopplerPageHandleDo: [ :popplerPageHandler |
-		self
-			poppler_page_get_size: popplerPageHandler
-			width: width
-			height: height ].
-
-	^ Rectangle
-		  center: 0 @ 0
-		  extent: (width doubleAt: 1) @ (height doubleAt: 1)
+	^ Rectangle center: 0 @ 0 extent: width @ height
 ]
 
 { #category : 'dispatched' }
@@ -54,7 +48,30 @@ RSPdfPage >> initialize [
 
 	super initialize.
 
-	self pageNumber: 1
+	self pageNumber: 1.
+
+	width := 0.0.
+	height := 0.0
+]
+
+{ #category : 'accessing' }
+RSPdfPage >> load [
+
+	pdf withPopplerDocumentHandleDo: [ :popplerDocHandle |
+		handle := self
+			          poppler_document: popplerDocHandle
+			          get_page: pageNumber - 1.
+
+		width := ByteArray new: 8.
+		height := ByteArray new: 8.
+
+		self
+			poppler_page_get_size: self getHandle
+			width: width
+			height: height.
+
+		width := width doubleAt: 1.
+		height := height doubleAt: 1 ]
 ]
 
 { #category : 'accessing' }
@@ -101,10 +118,5 @@ RSPdfPage >> poppler_page_render: p cairo: cr [
 { #category : 'accessing' }
 RSPdfPage >> withPopplerPageHandleDo: block [
 
-	pdf withPopplerDocumentHandleDo: [ :d |
-		| pageHandle |
-		pageHandle := self poppler_document: d get_page: pageNumber - 1.
-
-		[ block value: pageHandle ] ensure: [
-			pdf g_object_unref: pageHandle ] ]
+	block value: self getHandle
 ]

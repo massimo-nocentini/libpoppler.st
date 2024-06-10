@@ -5,5 +5,6 @@ FileReference >> asPdf [
 
 	^ PopplerPdf new
 		  fileReference: self;
+		  load;
 		  yourself
 ]
