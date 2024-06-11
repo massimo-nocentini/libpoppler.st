@@ -1,13 +1,28 @@
 Trait {
 	#name : 'TPopplerStandaloneTeXBuilder',
+	#instVars : [
+		'commaSeparatedDocClassOptionsString'
+	],
 	#category : 'LibPoppler',
 	#package : 'LibPoppler'
 }
 
+{ #category : 'accessing' }
+TPopplerStandaloneTeXBuilder >> commaSeparatedDocClassOptionsString [
+
+	^ commaSeparatedDocClassOptionsString
+]
+
+{ #category : 'accessing' }
+TPopplerStandaloneTeXBuilder >> commaSeparatedDocClassOptionsString: anObject [
+
+	commaSeparatedDocClassOptionsString := anObject
+]
+
 { #category : 'enumerating' }
 TPopplerStandaloneTeXBuilder >> standaloneLatexFooter [
 
-	^ ' \)
+	^ '
 \end{document}'
 ]
 
@@ -15,14 +30,20 @@ TPopplerStandaloneTeXBuilder >> standaloneLatexFooter [
 TPopplerStandaloneTeXBuilder >> standaloneLatexPreamble [
 	"https://tex.stackexchange.com/questions/353943/how-to-paste-a-mathematica-formula-to-the-latex-unicode-included"
 
-	^ '\documentclass[12pt]{standalone}
-\usepackage{mathtools}
-\usepackage{concrete}
-\usepackage{euler}
-\usepackage{amssymb}
-\usepackage[T1]{fontenc}
-\usepackage{fontspec}
-\newfontfamily{\mathematicamono}{MathematicaMono}
+	^ String streamContents: [ :stream |
+		  stream
+			  << '\documentclass[';
+			  << self commaSeparatedDocClassOptionsString;
+			  << ']{standalone}';
+			  cr.
+
+		  self texPackages do: [ :packageName |
+			  stream
+				  << '\usepackage';
+				  << packageName;
+				  cr ].
+
+		  stream << '\newfontfamily{\mathematicamono}{MathematicaMono}
 \ExplSyntaxOn
 \NewDocumentCommand{\mmono}{m}
  {
@@ -34,7 +55,20 @@ TPopplerStandaloneTeXBuilder >> standaloneLatexPreamble [
  }
 \ExplSyntaxOff
 \begin{document}
-\(\displaystyle '
+' ]
+]
+
+{ #category : 'enumerating' }
+TPopplerStandaloneTeXBuilder >> texPackages [
+
+	^ { '{mathtools}'. '{concrete}'. '{euler}'. '{amssymb}'. '[T1]{fontenc}'.
+	  '{fontspec}' } , self texPackagesExtra
+]
+
+{ #category : 'enumerating' }
+TPopplerStandaloneTeXBuilder >> texPackagesExtra [
+
+	^ {  }
 ]
 
 { #category : 'enumerating' }

@@ -10,7 +10,7 @@ Class {
 	#package : 'LibPoppler'
 }
 
-{ #category : 'accessing' }
+{ #category : 'as yet unclassified' }
 PopplerTeXChunk >> asRSPangoShapeUsingFont: aFont [
 
 	| shape texContent |
@@ -26,13 +26,13 @@ PopplerTeXChunk >> asRSPangoShapeUsingFont: aFont [
 		  asCompositeShape
 ]
 
-{ #category : 'accessing' }
+{ #category : 'as yet unclassified' }
 PopplerTeXChunk >> chunk [
 
 	^ chunk
 ]
 
-{ #category : 'accessing' }
+{ #category : 'as yet unclassified' }
 PopplerTeXChunk >> chunk: anObject [
 
 	chunk := anObject
