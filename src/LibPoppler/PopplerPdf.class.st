@@ -33,7 +33,7 @@ Class {
 { #category : 'instance creation' }
 PopplerPdf class >> compile: texCompilerName TeX: texString times: iterations [
 
-	| tmpFileName fileReference last fullName cmd stream |
+	| tmpFileName fileReference last fullName cmd stream pdfFileReference |
 	fileReference := FileReference newTempFilePrefix: 'RSPdf-' suffix: ''.
 
 	fullName := fileReference fullName.
@@ -55,7 +55,11 @@ PopplerPdf class >> compile: texCompilerName TeX: texString times: iterations [
 
 		stream flush ].
 
-	^ (fileReference fullName , '.pdf') asFileReference asPdf
+	pdfFileReference := (fileReference fullName , '.pdf') asFileReference.
+
+	pdfFileReference exists ifFalse: [ Smalltalk tools transcript open ].
+
+	^ pdfFileReference asPdf
 ]
 
 { #category : 'instance creation' }
@@ -145,9 +149,7 @@ PopplerPdf >> load [
 			self g_bytes_unref: gbytesHandle.
 
 			self addToTheResourceManager ]
-		ifFalse: [
-			Smalltalk tools transcript open.
-			Error signal: 'Cannot load the desired pdf.' ]
+		ifFalse: [ Error signal: 'Cannot load the desired pdf.' ]
 ]
 
 { #category : 'accessing' }
