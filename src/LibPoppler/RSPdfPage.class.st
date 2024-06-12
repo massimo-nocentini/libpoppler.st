@@ -5,9 +5,7 @@ Class {
 	#classTraits : 'TExternalAddressHolder classTrait',
 	#instVars : [
 		'pdf',
-		'pageNumber',
-		'width',
-		'height'
+		'pageNumber'
 	],
 	#category : 'LibPoppler-Roassal',
 	#package : 'LibPoppler',
@@ -28,26 +26,18 @@ RSPdfPage >> accept: visitor [
 	visitor visitPdfPage: self
 ]
 
-{ #category : 'accessing' }
-RSPdfPage >> computeEncompassingRectangle [
-
-	^ Rectangle center: 0 @ 0 extent: width @ height
-]
-
 { #category : 'initialization' }
 RSPdfPage >> initialize [
 
 	super initialize.
 
-	self pageNumber: 1.
-
-	width := 0.0.
-	height := 0.0
+	self pageNumber: 1
 ]
 
 { #category : 'accessing' }
 RSPdfPage >> load [
 
+	| width height |
 	handle := self
 		          poppler_document: pdf getHandle
 		          get_page: pageNumber - 1.
@@ -60,8 +50,8 @@ RSPdfPage >> load [
 		width: width
 		height: height.
 
-	width := width doubleAt: 1.
-	height := height doubleAt: 1.
+	baseRectangle := Rectangle extentCenteredAtCartesianOrigin:
+		                 (width doubleAt: 1) @ (height doubleAt: 1).
 
 	self addToTheResourceManager
 ]
