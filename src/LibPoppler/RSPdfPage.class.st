@@ -61,7 +61,9 @@ RSPdfPage >> load [
 		height: height.
 
 	width := width doubleAt: 1.
-	height := height doubleAt: 1
+	height := height doubleAt: 1.
+
+	self addToTheResourceManager
 ]
 
 { #category : 'accessing' }

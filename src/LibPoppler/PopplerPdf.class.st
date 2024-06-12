@@ -142,7 +142,9 @@ PopplerPdf >> load [
 						 load;
 						 yourself) ].
 
-			self g_bytes_unref: gbytesHandle ]
+			self g_bytes_unref: gbytesHandle.
+
+			self addToTheResourceManager ]
 		ifFalse: [
 			Smalltalk tools transcript open.
 			Error signal: 'Cannot load the desired pdf.' ]
