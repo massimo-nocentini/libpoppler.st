@@ -4,7 +4,7 @@ Extension { #name : 'RSAthensRenderer' }
 RSAthensRenderer >> visitPdfPage: pdfShape [
 
 	| lbtranslation |
-	lbtranslation := (pdfShape extent / 2.0) asFloatPoint negated.
+	lbtranslation := pdfShape extent halvedAsFloat negated.
 
 	matrix translateBy: lbtranslation.
 
