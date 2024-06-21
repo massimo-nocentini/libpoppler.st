@@ -9,8 +9,7 @@ Class {
 { #category : 'accessing - platform' }
 GLibLibrary >> macLibraryName [
 
-	^ FFIMacLibraryFinder findLibrary:
-		  '/usr/local/Cellar/glib/2.80.0_2/lib/libglib-2.0.dylib'
+	^ FFIMacLibraryFinder findLibrary: 'libglib-2.0.dylib'
 ]
 
 { #category : 'accessing platform' }

@@ -9,8 +9,7 @@ Class {
 { #category : 'accessing - platform' }
 GObjectLibrary >> macLibraryName [
 
-	^ FFIMacLibraryFinder findLibrary:
-		  '/usr/local/Cellar/glib/2.80.0_2/lib/libgobject-2.0.dylib'
+	^ FFIMacLibraryFinder findLibrary: 'libgobject-2.0.dylib'
 ]
 
 { #category : 'accessing - platform' }
