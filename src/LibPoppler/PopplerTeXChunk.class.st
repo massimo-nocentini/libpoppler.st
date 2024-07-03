@@ -23,7 +23,7 @@ PopplerTeXChunk >> asRSPangoShapeUsingFont: aFont [
 
 	^ shape
 		  model: self;
-		  asCompositeShape
+		  yourself
 ]
 
 { #category : 'as yet unclassified' }
