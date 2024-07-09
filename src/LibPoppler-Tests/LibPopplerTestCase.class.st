@@ -11,21 +11,28 @@ LibPopplerTestCase >> beamerTeXString [
 	<tex: 'pdflatex' times: 2 pagesPerRow: 1>
 	'
 \documentclass{beamer}
-%Information to be included in the title page:
-\title{Sample title}
-\author{Anonymous}
-\institute{Overleaf}
-\date{2021}
+\title{Notebooks}
+\author{Massimo Nocentini}
+\institute{University of Florence, freelancer}
+\date{\today}
 
 \begin{document}
 
 \frame{\titlepage}
 
 \begin{frame}
-\frametitle{Sample frame title}
-This is some text in the first frame. This is some text in the first frame. This is some text in the first frame.
-\end{frame}
+\frametitle{Agenda}
+It''s all about documentation, 
+\begin{itemize}
+	\item personal experience, during my PhD and in my work;
+	\item two new Roassal citizens: \textit{Pango} and \textit{Pdf} shapes, respectively;
+	\item stretching \texttt{Playground}s toward \texttt{Notebook}s;
+	\item \texttt{Microdown} extensions: \LaTeX, \texttt{tikZ} and \texttt{tree-sitter};
+	\item tools integration: \texttt{Documentation} and \texttt{Calypso} browsers;
+\end{itemize}
+in particular.
 
+\end{frame}
 \end{document}
 '
 ]
