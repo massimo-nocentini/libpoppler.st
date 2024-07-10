@@ -5,6 +5,20 @@ Class {
 	#package : 'LibPoppler-Tests'
 }
 
+{ #category : 'as yet unclassified' }
+LibPopplerTestCase >> aSimpleEvaluator [
+	"
+Just evaluate the following:
+
+```pharoeval
+DateAndTime now
+```
+
+"
+
+	self shouldBeImplemented
+]
+
 { #category : 'TeX chunks' }
 LibPopplerTestCase >> beamerTeXString [
 
