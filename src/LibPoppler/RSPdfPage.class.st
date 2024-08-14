@@ -42,8 +42,8 @@ RSPdfPage >> load [
 		          poppler_document: pdf getHandle
 		          get_page: pageNumber - 1.
 
-	width := ByteArray new: 8.
-	height := ByteArray new: 8.
+	width := FFIFloat64 newBuffer.
+	height := FFIFloat64 newBuffer.
 
 	self
 		poppler_page_get_size: self getHandle
