@@ -2,9 +2,7 @@ Extension { #name : 'FileReference' }
 
 { #category : '*LibPoppler' }
 FileReference >> asPdf [
+	"The PDF document in this file (a PopplerDocument; its pages are PopplerPages)."
 
-	^ PopplerPdf new
-		  fileReference: self;
-		  load;
-		  yourself
+	^ PopplerDocument fromFile: self
 ]
