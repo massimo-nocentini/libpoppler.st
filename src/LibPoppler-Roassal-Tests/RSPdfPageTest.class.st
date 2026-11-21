@@ -141,6 +141,23 @@ RSPdfPageTest >> testPageIsPlacedOnTheShape [
 ]
 
 { #category : 'tests' }
+RSPdfPageTest >> testPagelessShapeDrawsItsBackground [
+	"RSPdfPage new has no page: on a black canvas it draws its white background only, without poppler."
+
+	| shape canvas form white expected |
+	shape := RSPdfPage new.
+	shape extent: 100 @ 50.
+	canvas := self canvasWith: shape color: Color black.
+	form := canvas asForm.
+	self assert: shape page isNil.
+	expected := self mappedRectangleOf: shape in: canvas.
+	white := self boundsOf: form where: [ :rgb | rgb = 16rFFFFFF ].
+	self assert: white notNil.
+	self assert: (white origin - expected origin) abs < (2 @ 2).
+	self assert: (white corner - expected corner) abs < (2 @ 2)
+]
+
+{ #category : 'tests' }
 RSPdfPageTest >> testRenderPopplerPdfPage [
 	"The selector kept from the previous LibPoppler draws the shape's page (no background)."
 
