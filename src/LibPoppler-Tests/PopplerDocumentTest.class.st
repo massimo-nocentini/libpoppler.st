@@ -1,5 +1,5 @@
 "
-PopplerDocument: opening from bytes and files, metadata, pages and labels, errors, passwords, reopening after a (forged) restart, finalization, release, copies, and the stale-object choke point.
+`PopplerDocument`: opening from bytes and files, metadata, pages and labels, errors, passwords, reopening after a (forged) restart, finalization, `release`, copies, and the stale-object choke point.
 "
 Class {
 	#name : 'PopplerDocumentTest',

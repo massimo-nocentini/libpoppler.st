@@ -1,5 +1,5 @@
 "
-PopplerPage: sizes, labels, indexes and text of the fixtures.
+`PopplerPage`: sizes, labels, indexes and text of the fixtures.
 "
 Class {
 	#name : 'PopplerPageTest',

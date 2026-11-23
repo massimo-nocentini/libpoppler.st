@@ -1,9 +1,9 @@
 "
 I am libpoppler-glib, resolved by uFFI's finders (image directory, VM directory or bundle, then system paths) under its soname / install name / MSYS2 DLL name: the cairo stack VM bundles poppler 26.11.
 
-Class side: `isAvailable` (the library resolves and exports `poppler_get_version`) and `versionString` (poppler's runtime version, e.g. '26.11.0').
+Class side: `isAvailable` (the library resolves and exports `poppler_get_version`) and `versionString` (poppler's runtime version, e.g. `'26.11.0'`).
 
-The GLib side of the bindings (strings, GBytes, GError, GObject references, finalization) is LibPangoCairo's `GLib` group (LibGLib, LibGLib-Cairo).
+The GLib side of the bindings (strings, GBytes, GError, GObject references, finalization) is LibPangoCairo's `GLib` group (`LibGLib`, `LibGLib-Cairo`).
 "
 Class {
 	#name : 'PopplerLibrary',

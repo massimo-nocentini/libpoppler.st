@@ -1,7 +1,12 @@
 "
-On macOS the cairo stack bundles a fontconfig built for poppler only, with no system configuration file: poppler needs one to substitute the base-14 fonts (non-embedded Helvetica, Times ...). `ensureConfigured`, sent before the first document of every session, loads the bundle's `Contents/Resources/fontconfig/fonts.conf` into poppler's fontconfig (FcConfigCreate, FcConfigParseAndLoad, FcConfigSetCurrent, then FcConfigDestroy of our reference).
+On macOS the cairo stack bundles a fontconfig built for poppler only, with no system configuration file: poppler needs one to substitute the base-14 fonts (non-embedded Helvetica, Times ...). `ensureConfigured`, sent before the first document of every session, loads the bundle's `Contents/Resources/fontconfig/fonts.conf` into poppler's fontconfig (`FcConfigCreate`, `FcConfigParseAndLoad`, `FcConfigSetCurrent`, then `FcConfigDestroy` of our reference).
 
-Both files are located from PopplerLibrary's resolved path (`Contents/MacOS/Plugins/libpoppler-glib.8.dylib`): the fontconfig library is `libfontconfig.1.dylib` next to it (the file poppler's `@rpath` resolves to, so dyld answers the image already loaded) and the configuration `../../Resources/fontconfig/fonts.conf` from there. The four callouts use `ffiCall:module:` with that absolute path.
+Both files are located from `PopplerLibrary`'s resolved path (`Contents/MacOS/Plugins/libpoppler-glib.8.dylib`):
+
+- the fontconfig library is `libfontconfig.1.dylib` next to it (the file poppler's `@rpath` resolves to, so dyld answers the image already loaded) and
+- the configuration `../../Resources/fontconfig/fonts.conf` from there.
+
+The four callouts use `ffiCall:module:` with that absolute path.
 
 A no-op on Linux and Windows (the system's or the bundle's configuration is found by fontconfig itself), when `FONTCONFIG_FILE` is set, or when the configuration file does not exist (a poppler not from the bundle).
 "

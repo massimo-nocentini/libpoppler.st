@@ -1,5 +1,5 @@
 "
-I bind my users' callouts (`ffiCall:` without `module:`) to PopplerLibrary, on both sides.
+I bind my users' callouts (`ffiCall:` without `module:`) to `PopplerLibrary`, on both sides.
 "
 Trait {
 	#name : 'TPopplerLibrary',

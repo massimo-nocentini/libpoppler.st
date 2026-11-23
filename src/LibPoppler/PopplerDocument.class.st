@@ -1,20 +1,30 @@
 "
-I am a PDF document opened by poppler-glib (a PopplerDocument GObject), always from bytes: `fromFile:` reads the whole file in Smalltalk and nothing ever reaches GIO.
+I am a PDF document opened by poppler-glib (a `PopplerDocument` GObject), always from bytes: `fromFile:` reads the whole file in Smalltalk and nothing ever reaches GIO.
 
-	doc := PopplerDocument fromFile: 'paper.pdf'.        ""or: 'paper.pdf' asFileReference asPdf""
-	doc := PopplerDocument fromBytes: aByteArray password: 'secret'.
-	doc pageCount.  doc title.  doc author.
-	(doc pageAt: 1) text.  (doc pageLabeled: 'ii') index.
-	doc pagesDo: [ :page | ... ].
+```smalltalk
+doc := PopplerDocument fromFile: 'paper.pdf'.
+	""or: 'paper.pdf' asFileReference asPdf""
+doc := PopplerDocument fromBytes: aByteArray password: 'secret'.
+doc pageCount.  doc title.  doc author.
+(doc pageAt: 1) text.  (doc pageLabeled: 'ii') index.
+doc pagesDo: [ :page | ... ].
+```
 
-Pages are PopplerPages, made lazily by `pageAt:` (1-based; SubscriptOutOfBounds outside 1..pageCount) and cached, so `pageAt:` and `pageLabeled:` answer the same object for the same page. `title` and `author` answer nil when the PDF has none.
+Pages are `PopplerPage`s, made lazily by `pageAt:` (1-based; `SubscriptOutOfBounds` outside `1..pageCount`) and cached, so `pageAt:` and `pageLabeled:` answer the same object for the same page. `title` and `author` answer nil when the PDF has none.
 
-Errors: a document that cannot be opened signals PopplerError (`isEncrypted` for a missing or wrong password, `isDamaged`/`isInvalid` for bytes that are not a PDF), never a crash.
+## Errors
 
-Memory: the GObject is unref'd when I am collected, or at once by `release`. Pages hold a reference on their document in C, so the order in which they are collected does not matter.
+A document that cannot be opened signals `PopplerError` (`isEncrypted` for a missing or wrong password, `isDamaged`/`isInvalid` for bytes that are not a PDF), never a crash.
 
-Image restarts: unlike Pango objects, I survive a restart. In a new session the first use reopens me: from the same file when I was opened from one (I keep the FileReference, its size and modification time, never its bytes; PopplerError `isOpenFile` when it vanished or changed), else from the bytes I keep. The old pointer is forgotten, never unref'd. My pages reopen the same way through me.
-Passwords are kept for the current session only, in a class-side weak dictionary that `shutDown:` empties (I am registered with the SessionManager), so a password is never written into a snapshot. After a restart an encrypted document signals PopplerError `isEncrypted` until it is given its password again with `password:`.
+## Memory
+
+The GObject is unref'd when I am collected, or at once by `release`. Pages hold a reference on their document in C, so the order in which they are collected does not matter.
+
+## Image restarts
+
+Unlike Pango objects, I survive a restart. In a new session the first use reopens me: from the same file when I was opened from one (I keep the FileReference, its size and modification time, never its bytes; `PopplerError` `isOpenFile` when it vanished or changed), else from the bytes I keep. The old pointer is forgotten, never unref'd. My pages reopen the same way through me.
+
+Passwords are kept for the current session only, in a class-side weak dictionary that `shutDown:` empties (I am registered with the `SessionManager`), so a password is never written into a snapshot. After a restart an encrypted document signals `PopplerError` `isEncrypted` until it is given its password again with `password:`.
 "
 Class {
 	#name : 'PopplerDocument',

@@ -1,5 +1,5 @@
 "
-Rendering PopplerPages on Athens canvases and into Forms: ink, placement under an Athens transform, printing, the JPEG (DCT) decoder and the base-14 font substitution. Also checks the fixtures' own building blocks (the JPEG, RC4).
+Rendering `PopplerPage`s on Athens canvases and into Forms: ink, placement under an Athens transform, printing, the JPEG (DCT) decoder and the base-14 font substitution. Also checks the fixtures' own building blocks (the JPEG, RC4).
 "
 Class {
 	#name : 'PopplerRenderTest',

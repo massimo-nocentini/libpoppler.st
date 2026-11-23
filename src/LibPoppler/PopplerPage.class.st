@@ -1,11 +1,16 @@
 "
-I am one page of a PopplerDocument (a PopplerPage GObject), made by `PopplerDocument>>pageAt:` (and cached there).
+I am one page of a `PopplerDocument` (a `PopplerPage` GObject), made by `PopplerDocument>>pageAt:` (and cached there).
 
-	page size.          ""a Point of Floats in PDF points (1/72 in)""
-	page label.         ""the page label ('iv', 'A-1'); the page number ('3') when the PDF defines no labels""
-	page text.          ""the page's text, UTF-8 decoded""
-	page asFormScale: 2.
-	anAthensCairoCanvas drawPopplerPage: page.     ""= page renderOn: anAthensCairoCanvas""
+```smalltalk
+page size.  ""a Point of Floats in PDF points (1/72 in)""
+page label.
+	""the page label ('iv', 'A-1'); the page number ('3')
+	when the PDF defines no labels""
+page text.  ""the page's text, UTF-8 decoded""
+page asFormScale: 2.
+anAthensCairoCanvas drawPopplerPage: page.
+	""= page renderOn: anAthensCairoCanvas""
+```
 
 Rendering draws the page with its top-left corner at the origin of the canvas's current Athens user space, 1 unit = 1 PDF point, without painting a background; `asFormScale:` paints a white page into a new surface first.
 

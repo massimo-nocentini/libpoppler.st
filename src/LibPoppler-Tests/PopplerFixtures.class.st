@@ -1,12 +1,12 @@
 "
 I make the PDFs of the tests at test time (no binary fixture in the repository), on my class side:
 
-- `threePagePdf`: written by cairo's PDF surface (cairo FFI with `module: CairoLibrary`, to a temp file read back and deleted): page sizes 595.28x841.89, 612x792 and 300x200, page labels 'i' 'ii' 'A-1', title 'Pharo ✓ Poppler', author 'Pharo', toy text 'Hello Poppler <n>' on each page and 'Grüße €' on page 1 (sans-serif 24);
-- `jpegPdf`: one 64x64 page painting, at 16@16, a 32x32 image surface that carries `redJpeg` as its CAIRO_MIME_TYPE_JPEG data, so the PDF embeds the JPEG (DCTDecode) and poppler decodes it with libjpeg-turbo. The mime data lives in `ExternalAddress allocate:` memory freed only after the image surface is destroyed;
-- `encryptedPdfUser: 'pharo' owner: 'owner'`: a one-page PDF written here, encrypted with the Standard security handler V2 R3, 128-bit RC4, P = -4 (PDF 1.7, 7.6.3, Algorithms 1, 2, 3 and 5; MD5 from the image, RC4 in `rc4:data:`), with a trailer /ID; its page shows 'Secret' in non-embedded Helvetica;
-- `base14Pdf`: a hand-written one-page PDF (about 450 bytes, correct xref) with the text 'Base14 Pharo' in non-embedded /Type1 Helvetica: poppler must substitute the font through fontconfig.
+- `threePagePdf`: written by cairo's PDF surface (cairo FFI with `module: CairoLibrary`, to a temp file read back and deleted): page sizes 595.28x841.89, 612x792 and 300x200, page labels `'i'` `'ii'` `'A-1'`, title `'Pharo ✓ Poppler'`, author `'Pharo'`, toy text `'Hello Poppler <n>'` on each page and `'Grüße €'` on page 1 (sans-serif 24);
+- `jpegPdf`: one 64x64 page painting, at `16@16`, a 32x32 image surface that carries `redJpeg` as its `CAIRO_MIME_TYPE_JPEG` data, so the PDF embeds the JPEG (DCTDecode) and poppler decodes it with libjpeg-turbo. The mime data lives in `ExternalAddress allocate:` memory freed only after the image surface is destroyed;
+- `encryptedPdfUser: 'pharo' owner: 'owner'`: a one-page PDF written here, encrypted with the Standard security handler V2 R3, 128-bit RC4, P = -4 (PDF 1.7, 7.6.3, Algorithms 1, 2, 3 and 5; MD5 from the image, RC4 in `rc4:data:`), with a trailer `/ID`; its page shows `'Secret'` in non-embedded Helvetica;
+- `base14Pdf`: a hand-written one-page PDF (about 450 bytes, correct xref) with the text `'Base14 Pharo'` in non-embedded `/Type1` Helvetica: poppler must substitute the font through fontconfig.
 
-`redJpeg` is a fixed 32x32 baseline JPEG of solid #C00000 (646 bytes), made once with the libjpeg-turbo 3.2.1 of the cairo stack prototype and checked to decode to exactly that colour.
+`redJpeg` is a fixed 32x32 baseline JPEG of solid `#C00000` (646 bytes), made once with the libjpeg-turbo 3.2.1 of the cairo stack prototype and checked to decode to exactly that colour.
 "
 Class {
 	#name : 'PopplerFixtures',

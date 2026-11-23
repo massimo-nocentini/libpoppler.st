@@ -1,13 +1,17 @@
 "
-I am a Roassal shape showing one page of a PDF: a PopplerPage drawn by poppler on the canvas's cairo context.
+I am a Roassal shape showing one page of a PDF: a `PopplerPage` drawn by poppler on the canvas's cairo context.
 
-	shape := RSPdfPage page: ('paper.pdf' asFileReference asPdf pageAt: 1).
-	shapes := 'paper.pdf' asFileReference asPdf asRoassalShapes.     ""an RSGroup, one shape per page""
-	(document pageAt: 2) asRoassalShape.
+```smalltalk
+shape := RSPdfPage page:
+	('paper.pdf' asFileReference asPdf pageAt: 1).
+shapes := 'paper.pdf' asFileReference asPdf asRoassalShapes.
+	""an RSGroup, one shape per page""
+(document pageAt: 2) asRoassalShape.
+```
 
 My extent is the page size in PDF points (1 unit = 1 pt), taken when the page is set. Like every bounding shape I am centred on my position; the page is drawn with its top-left corner at the top-left of my encompassing rectangle. `showsBackground:` (default true) paints a white page under the PDF content, which itself paints no background.
 
-I store only my PopplerPage (and plain values). The page reopens itself after an image restart (through its document, which re-reads its file or its kept bytes), so a canvas holding me redraws in a new session.
+I store only my `PopplerPage` (and plain values). The page reopens itself after an image restart (through its document, which re-reads its file or its kept bytes), so a canvas holding me redraws in a new session.
 "
 Class {
 	#name : 'RSPdfPage',

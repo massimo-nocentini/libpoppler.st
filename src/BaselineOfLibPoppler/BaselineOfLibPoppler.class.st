@@ -1,13 +1,14 @@
 "
 I load libpoppler.st: uFFI bindings to poppler-glib for Pharo 12 to 15, on the libraries of the cairo stack VM (or the system's).
 
-The shared GLib/GObject layer comes from libpangocairo.st, of which only the `GLib` group (LibGLib, LibGLib-Cairo) is loaded.
+The shared GLib/GObject layer comes from libpangocairo.st, of which only the `GLib` group (`LibGLib`, `LibGLib-Cairo`) is loaded.
 
 Groups:
-- `Core`: LibPoppler (PopplerDocument, PopplerPage, drawing on an Athens canvas, FileReference>>asPdf);
-- `Roassal`: Core and LibPoppler-Roassal (RSPdfPage, PopplerDocument>>asRoassalShapes);
-- `Examples`: LibPoppler-Examples (PopplerExamples);
-- `Tests`, `RoassalTests`: the tests of each layer (the Roassal tests reuse the fixtures of LibPoppler-Tests);
+
+- `Core`: `LibPoppler` (`PopplerDocument`, `PopplerPage`, drawing on an Athens canvas, `FileReference>>asPdf`);
+- `Roassal`: `Core` and `LibPoppler-Roassal` (`RSPdfPage`, `PopplerDocument>>asRoassalShapes`);
+- `Examples`: `LibPoppler-Examples` (`PopplerExamples`);
+- `Tests`, `RoassalTests`: the tests of each layer (the Roassal tests reuse the fixtures of `LibPoppler-Tests`);
 - `default`: all of them.
 
 Athens and Roassal are in the stock images.

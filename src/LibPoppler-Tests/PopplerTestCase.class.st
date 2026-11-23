@@ -1,5 +1,5 @@
 "
-The common part of the LibPoppler tests: skipped when libpoppler-glib is not found (failed instead when PHARO_CAIRO_STACK_EXPECT_LIBS=yes), the instance check before anything else, and helpers for reference counts (read on raw addresses we hold a reference to), forged sessions, finalization and ink.
+The common part of the LibPoppler tests: skipped when libpoppler-glib is not found (failed instead when `PHARO_CAIRO_STACK_EXPECT_LIBS=yes`), the instance check before anything else, and helpers for reference counts (read on raw addresses we hold a reference to), forged sessions, finalization and ink.
 "
 Class {
 	#name : 'PopplerTestCase',

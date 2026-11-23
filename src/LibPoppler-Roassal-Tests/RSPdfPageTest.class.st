@@ -1,7 +1,7 @@
 "
-RSPdfPage: extent, page shapes of a document, ink on a canvas exported as a Form, placement under the Roassal camera (position 100@50, zoom 2: the drawn page lies on the shape's encompassing rectangle mapped through the camera), and a shape whose page and document come from a previous image session.
+`RSPdfPage`: extent, page shapes of a document, ink on a canvas exported as a Form, placement under the Roassal camera (position `100@50`, zoom 2: the drawn page lies on the shape's encompassing rectangle mapped through the camera), and a shape whose page and document come from a previous image session.
 
-The PDFs are PopplerFixtures' (LibPoppler-Tests).
+The PDFs are `PopplerFixtures`' (`LibPoppler-Tests`).
 "
 Class {
 	#name : 'RSPdfPageTest',

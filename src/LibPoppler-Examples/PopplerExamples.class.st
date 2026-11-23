@@ -1,8 +1,12 @@
 "
-Examples of LibPoppler with Roassal (class side, `<example>`). They show a small three-page PDF written here in Smalltalk (`samplePdf`: base-14 Helvetica text and coloured boxes, page labels 'i' 'ii' 'iii'); the builders take any document:
+Examples of LibPoppler with Roassal (class side, `<example>`). They show a small three-page PDF written here in Smalltalk (`samplePdf`: base-14 Helvetica text and coloured boxes, page labels `'i'` `'ii'` `'iii'`); the builders take any document:
 
-	PopplerExamples gridCanvasOn: 'paper.pdf' asFileReference asPdf.
-	PopplerExamples textCanvasOn: (PopplerDocument fromFile: 'paper.pdf').
+```smalltalk
+PopplerExamples
+	gridCanvasOn: 'paper.pdf' asFileReference asPdf.
+PopplerExamples
+	textCanvasOn: (PopplerDocument fromFile: 'paper.pdf').
+```
 "
 Class {
 	#name : 'PopplerExamples',

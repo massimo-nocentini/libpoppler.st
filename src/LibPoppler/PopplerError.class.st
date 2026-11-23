@@ -1,8 +1,11 @@
 "
 I am a poppler error (GError domain `poppler-quark`), signalled when a document cannot be opened or reopened, or when poppler answers NULL where an object was expected.
 
-`code` is one of my class-side constants (poppler's PopplerError enum): `invalid` 0, `encrypted` 1, `openFile` 2, `badCatalog` 3, `damaged` 4, `signing` 5; test it with `isEncrypted`, `isDamaged`, `isInvalid`, `isOpenFile`.
-A wrong or missing password gives `isEncrypted`; bytes that are not a PDF `isDamaged` (or another code, never a crash); a file-opened document whose file vanished or changed before a reopen `isOpenFile`.
+`code` is one of my class-side constants (poppler's `PopplerError` enum): `invalid` 0, `encrypted` 1, `openFile` 2, `badCatalog` 3, `damaged` 4, `signing` 5; test it with `isEncrypted`, `isDamaged`, `isInvalid`, `isOpenFile`.
+
+- A wrong or missing password gives `isEncrypted`;
+- bytes that are not a PDF `isDamaged` (or another code, never a crash);
+- a file-opened document whose file vanished or changed before a reopen `isOpenFile`.
 "
 Class {
 	#name : 'PopplerError',
