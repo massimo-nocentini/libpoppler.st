@@ -157,6 +157,14 @@ PopplerDocument class >> shutDown: quitting [
 	passwords := nil
 ]
 
+{ #category : 'system startup' }
+PopplerDocument class >> startUp: resuming [
+	"Nothing to do: I am registered for shutDown: only.  ExternalObject class>>startUp:, which I would
+	inherit, sets every ExternalAddress of the image to null; ExternalObject itself does it early in the
+	startup list, and doing it again at my place, after the world was drawn, broke what had been made
+	meanwhile (the fonts of cairo, in an image saved with a Roassal canvas open)"
+]
+
 { #category : 'private' }
 PopplerDocument class >> stampOf: aFileReference [
 	"Size and modification time of the file (a reopen refuses a file that changed)."

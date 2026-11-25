@@ -271,6 +271,17 @@ PopplerDocumentTest >> testPasswordsAreForgottenAtShutDown [
 	self assert: (PopplerDocument passwordFor: document) isNil
 ]
 
+{ #category : 'tests - sessions' }
+PopplerDocumentTest >> testStartUpKeepsTheExternalAddresses [
+	"The assertion on the method comes first: the inherited one would null the addresses of the whole image"
+
+	| address |
+	self assert: (PopplerDocument class lookupSelector: #startUp:) methodClass equals: PopplerDocument class.
+	address := ExternalAddress fromAddress: 16r1234.
+	PopplerDocument startUp: true.
+	self deny: address isNull
+]
+
 { #category : 'tests - memory' }
 PopplerDocumentTest >> testRelease [
 
